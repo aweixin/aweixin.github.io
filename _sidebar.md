@@ -16,5 +16,8 @@
 
 * [Python](docs/Python.md)
 
+* [cmd](docs/cmd.md)
+
 * [natapp.cn](http://natapp.cn/)
+
 * [Sunny-Ngrok](http://www.ngrok.cc/)
