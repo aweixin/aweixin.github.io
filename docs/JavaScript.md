@@ -1,3 +1,24 @@
+## 去掉微信浏览器前进、后退和刷新底部按钮
+
+```js
+	document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+		WeixinJSBridge.call('hideToolbar');
+		WeixinJSBridge.call('hideOptionMenu');
+	});
+```
+
+
+## vConsole
+```js 
+<script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.9.0/vconsole.min.js"></script>
+<script>
+	// init vConsole
+	var vConsole = new VConsole();
+	console.log('Hello world');
+</script>
+```
+
+
 ## rem 适用于获取屏幕宽度等分设置 兼容flexible.js 库
 
 ```js
