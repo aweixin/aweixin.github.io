@@ -1,3 +1,10 @@
+##H5 meta viewport
+
+```html
+<script>!function(){var e;function t(){var e=document.querySelector('meta[name="viewport"]'),t=window.screen.width;e.setAttribute("content","width=750,initial-scale="+t/750+",user-scalable=no,viewport-fit=cover")}window.addEventListener("resize",function(){clearTimeout(e),e=setTimeout(t,300)}),t()}()</script>
+```
+
+
 ## 控制栏提示
 
 ```js
