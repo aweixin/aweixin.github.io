@@ -3,6 +3,7 @@
 * [NPM](docs/nodejs.md)
 * [Git常用命令](docs/git.md)
 * [JS 工具库](docs/js_utils.md)
+* [常用正则表达式](docs/regex.md)
 * [css](docs/css.md)
 * [php](docs/php.md)
 * [JavaScript](docs/JavaScript.md)
