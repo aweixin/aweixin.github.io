@@ -1,10 +1,3 @@
-<div align="center">
-  <p><img src="http://openlogos.org/logos/sage.jpg" /></p>
-  <img src="https://img.shields.io/badge/branch-master-brightgreen.svg">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg">
-  <img src="https://jaywcjlove.github.io/sb/lang/chinese.svg">
-</div>
-
 ## 目录
 
 - [邮箱](#邮箱)
@@ -287,9 +280,3 @@
 ```
 
 ![num](images/num10.png)
-
-## License
-
-MIT License. See the [LICENSE](LICENSE) file.
-
-**[⬆ top](#目录)**
