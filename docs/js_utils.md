@@ -21,13 +21,11 @@ onHashChange(() => console.log("onHashChange"));
 utils.onHashChange(() => console.log("HashChange"));
 ```
 
-## utils
+## arrayEqual
 
-### arrayEqual
+### 参与比较的两个数组，如果每个元素都相等，返回 true,否则返回 false
 
-#### 参与比较的两个数组，如果每个元素都相等，返回 true,否则返回 false
-
-#### 参数
+### 参数
 
 - 参与比较的两个数组
 
@@ -35,11 +33,11 @@ utils.onHashChange(() => console.log("HashChange"));
 console.log(arrayEqual([1, 2], [1, 2])); // true
 ```
 
-### isNetAvailable
+## isNetAvailable
 
-#### 检测当前环境网络状态,接受对象参数
+### 检测当前环境网络状态,接受对象参数
 
-#### 参数
+### 参数
 
 - code： 无网络时的状态码（自定义）
 
@@ -58,11 +56,11 @@ setInterval(() => {
 }, 1000);
 ```
 
-### onError
+## onError
 
-#### 捕获页面的 JS 报错或者 Promise 错误(reject)事件，同时监听了 onerror 与 onunhandledrejection。
+### 捕获页面的 JS 报错或者 Promise 错误(reject)事件，同时监听了 onerror 与 onunhandledrejection。
 
-#### 参数
+### 参数
 
 - 回调函数，任何一种错误触发，都会执行此回调函数
 
@@ -77,20 +75,20 @@ try {
 }
 ```
 
-### onVisibilityChange
+## onVisibilityChange
 
-#### 监听页面是否在前台显示（如果该页面只是被其它窗口挡住,document.hidden 仍然为 False）
+### 监听页面是否在前台显示（如果该页面只是被其它窗口挡住,document.hidden 仍然为 False）
 
-#### 参数
+### 参数
 
 - visibilityCallback ： 页面前台展示时候的回调函数
 - hiddenCallback：页面被隐藏时候的回调函数
 
-### locateByBaidu
+## locateByBaidu
 
-#### 利用百度地图获取当前定位，返回一个携带当前定位经纬度的 promise
+### 利用百度地图获取当前定位，返回一个携带当前定位经纬度的 promise
 
-#### 参数
+### 参数
 
 - 百度地图 ak
 
@@ -100,11 +98,11 @@ locateByBaidu(your ak).then({lng, lat} => {
 })
 ```
 
-### locationByNavigator
+## locationByNavigator
 
-#### H5 navigator 定位方式,返回一个携带当前定位经纬度的 promise
+### H5 navigator 定位方式,返回一个携带当前定位经纬度的 promise
 
-#### 参数
+### 参数
 
 - timeout 超时时间, 默认 5S
 
@@ -114,11 +112,11 @@ locationByNavigator().then(({lng, lat} => {
 });
 ```
 
-### jsonp
+## jsonp
 
-#### jsonp 方式实现 get 跨域，可用于获取地图等接口数据，返回一个携带返回信息的 promise
+### jsonp 方式实现 get 跨域，可用于获取地图等接口数据，返回一个携带返回信息的 promise
 
-#### 参数
+### 参数
 
 - timeout 超时时间, 默认 5S
 
@@ -128,11 +126,11 @@ jsonp(
 ).then((res) => res);
 ```
 
-### loadScript
+## loadScript
 
-#### loadScript 方式实现加载 JS 标签
+### loadScript 方式实现加载 JS 标签
 
-#### 参数
+### 参数
 
 - url
 
@@ -140,11 +138,11 @@ jsonp(
 loadScript("https://cdn.bootcdn.net/ajax/libs/vue/3.0.11/vue.cjs.js");
 ```
 
-### utf8_to_b64
+## utf8_to_b64
 
-#### 将代入参数使用 base64 编码并且返回
+### 将代入参数使用 base64 编码并且返回
 
-#### 参数
+### 参数
 
 - 转码的字符
 
@@ -152,11 +150,11 @@ loadScript("https://cdn.bootcdn.net/ajax/libs/vue/3.0.11/vue.cjs.js");
 console.log(utf8_to_b64("移植")); // 56e75qSN"
 ```
 
-### b64_to_utf8
+## b64_to_utf8
 
-#### 将使用同样规则编码的字符串使用逆规则解码
+### 将使用同样规则编码的字符串使用逆规则解码
 
-#### 参数
+### 参数
 
 - 解码的字符
 
@@ -164,19 +162,19 @@ console.log(utf8_to_b64("移植")); // 56e75qSN"
 console.log(b64_to_utf8("56e75qSN")); // 移植
 ```
 
-### getCookie
+## getCookie
 
-#### 获取 cookie 中的某个字段
+### 获取 cookie 中的某个字段
 
 ```javascript
 getCookie("id");
 ```
 
-### getExplore
+## getExplore
 
-#### 获取浏览器的版本，返回浏览器类型和版本
+### 获取浏览器的版本，返回浏览器类型和版本
 
-#### 可能得到浏览器的值
+### 可能得到浏览器的值
 
 - IE
 - EDGE
@@ -189,11 +187,11 @@ getCookie("id");
 getExplore(); // {browser: "Chrome"version: "90.0.4430.93"}
 ```
 
-### getOS
+## getOS
 
-#### 获取当前系统类型
+### 获取当前系统类型
 
-#### 可能得到的值
+### 可能得到的值
 
 - ios
 - android
@@ -206,35 +204,35 @@ getExplore(); // {browser: "Chrome"version: "90.0.4430.93"}
 getOS(); // MacOSX
 ```
 
-### isInWeiXin
+## isInWeiXin
 
-#### 判断是否在微信环境
+### 判断是否在微信环境
 
 ```javascript
 utils.isInWeiXin(); // chrom 返回 false
 ```
 
-### isInAlipay
+## isInAlipay
 
-#### 判断是否在支付宝环境
+### 判断是否在支付宝环境
 
 ```javascript
 utils.isInAlipay(); // chrom 返回 false
 ```
 
-### getScrollTop
+## getScrollTop
 
-#### 获取窗口滚轴距离顶部的距离并返回
+### 获取窗口滚轴距离顶部的距离并返回
 
 ```javascript
 getScrollTop();
 ```
 
-### copyMsg
+## copyMsg
 
-#### 将浏览器中输入框的内容写入剪切板--仅支持 input 和 textArea
+### 将浏览器中输入框的内容写入剪切板--仅支持 input 和 textArea
 
-#### 参数
+### 参数
 
 - el: HTML 元素-input 或者 textArea
 - callback: 写入剪切板之后的回调
@@ -248,11 +246,11 @@ var app = document.getElementById("app");
 copyMsg(app, () => console.log("success")); // 授权剪切板权限之后即可粘贴内容
 ```
 
-### scrollTo
+## scrollTo
 
-#### 将当前 window 的滚轴，在某短时间内（ms），纵向滚动到某个位置
+### 将当前 window 的滚轴，在某短时间内（ms），纵向滚动到某个位置
 
-#### 参数
+### 参数
 
 - to: 将要滚动到的位置
 - duration: 时间段
@@ -261,11 +259,11 @@ copyMsg(app, () => console.log("success")); // 授权剪切板权限之后即可
 function scrollTo(to: number, duration: number): void;
 ```
 
-### setScrollTop
+## setScrollTop
 
-#### 设置滚动条距顶部的距离
+### 设置滚动条距顶部的距离
 
-#### 参数
+### 参数
 
 - to: 设置的位置
 
@@ -273,11 +271,11 @@ function scrollTo(to: number, duration: number): void;
 setScrollTop(100);
 ```
 
-### windowResize
+## windowResize
 
-#### 参数
+### 参数
 
-#### H5 软键盘缩回、弹起回调
+### H5 软键盘缩回、弹起回调
 
 - downCallback: 键盘收起时候的回调
 - upCallback: 键盘弹出时候的回调
@@ -289,9 +287,9 @@ windowResize(
 );
 ```
 
-### commaify
+## commaify
 
-#### 给数字中间每 3 位加逗号
+### 给数字中间每 3 位加逗号
 
 ```typescript
 function commaify(param: string | number): string;
@@ -301,9 +299,9 @@ function commaify(param: string | number): string;
 commaify(1000000); // 10,000,000
 ```
 
-### filterCard
+## filterCard
 
-#### 身份证中间生日日期做掩码
+### 身份证中间生日日期做掩码
 
 ```typescript
 function filterCard(param: string | number): string;
@@ -313,9 +311,9 @@ function filterCard(param: string | number): string;
 utils.filterCard("410987100018420987") === "4109871000****0987"; // true
 ```
 
-### filterPhone
+## filterPhone
 
-#### 电话号码中间四位做掩码
+### 电话号码中间四位做掩码
 
 ```typescript
 function filterPhone(param: string | number): string;
@@ -325,9 +323,9 @@ function filterPhone(param: string | number): string;
 utils.filterPhone("10801229300") === "108****9300"; // true
 ```
 
-### digitUppercase
+## digitUppercase
 
-#### 现金金额转大写
+### 现金金额转大写
 
 ```typescript
 export function digitUppercase(n: number): string;
@@ -338,13 +336,13 @@ utils.digitUppercase(10801229300.69) ===
   "壹佰零捌亿零壹佰贰拾贰万玖仟叁佰元陆角玖分"; // true
 ```
 
-### 判断文件类型是否为图片
+## 判断文件类型是否为图片
 
 ```typescript
 isAssetTypeAnImage(File file)
 ```
 
-### 判断文件大小是不是超出范围
+## 判断文件大小是不是超出范围
 
 - 单位：M
 
@@ -352,9 +350,9 @@ isAssetTypeAnImage(File file)
 valiadateSize(File file, Number maxSize)
 ```
 
-### formatTime
+## formatTime
 
-#### 将代入的毫秒数计算为天、时、分、秒
+### 将代入的毫秒数计算为天、时、分、秒
 
 ```typescript
 type dateType = {
@@ -371,9 +369,9 @@ const timer = formatTime(172800000 + 36000000 + 120000 + 30000);
 console.log(timer);
 ```
 
-### formatDate
+## formatDate
 
-#### 格式化时间为各种格式
+### 格式化时间为各种格式
 
 ```typescript
 export function formatDate(param: number | Date | string): string;
@@ -386,9 +384,9 @@ utils.formatDate(new Date().setDate(1), "YYYY-MM**DD"); // "2021-05**01"
 utils.formatDate(new Date().getTime(), "YYYY/MM/DD hh:mm:ss"); // "2021/05/17 05:43:35"
 ```
 
-### isLeapYear
+## isLeapYear
 
-#### 判断是否是闰年
+### 判断是否是闰年
 
 ```typescript
 function isLeapYear(year: number): boolean;
@@ -398,9 +396,9 @@ function isLeapYear(year: number): boolean;
 utils.isLeapYear(2021); // false
 ```
 
-### isSameDay
+## isSameDay
 
-#### 判断是否是同一天
+### 判断是否是同一天
 
 ```typescript
 function isSameDay(date1: Date, date2: Date): boolean;
@@ -410,9 +408,9 @@ function isSameDay(date1: Date, date2: Date): boolean;
 utils.isSameDay(new Date(), new Date()); // true
 ```
 
-### debounce
+## debounce
 
-#### 防抖函数-高频触发的事件，如：按钮点击多次，只执行最后一次
+### 防抖函数-高频触发的事件，如：按钮点击多次，只执行最后一次
 
 - handler: 处理函数
 - delay: 时间段，表示 多长时间后执行这一次函数
@@ -426,7 +424,7 @@ function debounce(
 ): Function;
 ```
 
-#### 普通调用
+### 普通调用
 
 ```javascript
 function fun() {
@@ -436,7 +434,7 @@ const d = debounce(fun, 1000, true);
 d();
 ```
 
-#### 绑定 this
+### 绑定 this
 
 ```javascript
 const obj = {
@@ -449,7 +447,7 @@ const d = debounce(obj.run.bind(obj), 1000, false);
 d();
 ```
 
-#### 带参数的情形
+### 带参数的情形
 
 ```javascript
 const obj = {
@@ -462,9 +460,9 @@ const d = debounce(obj.run.bind(obj), 1000, true);
 d(1);
 ```
 
-### throttle
+## throttle
 
-#### 节流，事件在一段时间内按一定频率执行，多用于 resize,input 框输入
+### 节流，事件在一段时间内按一定频率执行，多用于 resize,input 框输入
 
 - handler: 处理函数
 - delay: 执行频率 次/ms
@@ -481,9 +479,9 @@ const a = throttle(() => {
 }, 1000);
 ```
 
-### once
+## once
 
-#### 只执行一次的函数
+### 只执行一次的函数
 
 - handler: 处理函数
 
@@ -498,9 +496,9 @@ setInterval(() => {
 }, 1);
 ```
 
-### getSize
+## getSize
 
-#### 设置 H5 根元素的 font-size
+### 设置 H5 根元素的 font-size
 
 - 用于 rem 布局
 - 设计稿宽度 750 物理像素
@@ -514,24 +512,9 @@ function getSize(base: number): void;
 utils.getSize(40); // iphone6 下 根元素 font-size 为20 px
 ```
 
-### deepClone
+## deepClone
 
-#### 深拷贝对象
-
-```typescript
-function deepClone(values: any): any;
-```
-
-```javascript
-const obj = { a: 1 };
-const o = utils.deepClone(obj);
-
-o.a = 2;
-```
-
-### isEmptyObject
-
-#### 判断一个对象是否没有一个属性
+### 深拷贝对象
 
 ```typescript
 function deepClone(values: any): any;
@@ -544,9 +527,24 @@ const o = utils.deepClone(obj);
 o.a = 2;
 ```
 
-### qsParam
+## isEmptyObject
 
-#### 序列化对象为请求参数
+### 判断一个对象是否没有一个属性
+
+```typescript
+function deepClone(values: any): any;
+```
+
+```javascript
+const obj = { a: 1 };
+const o = utils.deepClone(obj);
+
+o.a = 2;
+```
+
+## qsParam
+
+### 序列化对象为请求参数
 
 ```typescript
 function qsParam(object: object): string;
@@ -558,9 +556,9 @@ utils.qsParam(obj);
 // ?a=1&b=2
 ```
 
-### getTypeof
+## getTypeof
 
-#### 判断对象的类型
+### 判断对象的类型
 
 ```typescript
 function getTypeof(object: any): string;
@@ -570,9 +568,9 @@ function getTypeof(object: any): string;
 utils.getTypeof(new Map([])); // map
 ```
 
-### isInt
+## isInt
 
-#### 判断是不是一个正整数
+### 判断是不是一个正整数
 
 ```typescript
 function isInt(str: string | number): boolean;
@@ -582,9 +580,9 @@ function isInt(str: string | number): boolean;
 utils.isInt(0); // false
 ```
 
-### isNumber
+## isNumber
 
-#### 判断字符串是不是纯数字字符串
+### 判断字符串是不是纯数字字符串
 
 ```typescript
 function isNumber(str: string | number): boolean;
@@ -594,9 +592,9 @@ function isNumber(str: string | number): boolean;
 utils.isNumber("123a"); // false
 ```
 
-### isSpecialCode
+## isSpecialCode
 
-#### 判断含不含有特殊字符
+### 判断含不含有特殊字符
 
 ```typescript
 function isSpecialCode(str: string | number): boolean;
@@ -606,9 +604,9 @@ function isSpecialCode(str: string | number): boolean;
 utils.isSpecialCode("埃美柯.-"); // true
 ```
 
-### isEmail
+## isEmail
 
-#### 校验是否是邮箱
+### 校验是否是邮箱
 
 ```typescript
 function isEmail(str: string): boolean;
@@ -618,9 +616,9 @@ function isEmail(str: string): boolean;
 utils.isEmail("123"); // false
 ```
 
-### isIdCard
+## isIdCard
 
-#### 校验是否是身份证号码
+### 校验是否是身份证号码
 
 ```typescript
 function isIdCard(str: string): boolean;
@@ -630,9 +628,9 @@ function isIdCard(str: string): boolean;
 utils.isIdCard("123"); // false
 ```
 
-### isPhoneNum
+## isPhoneNum
 
-#### 校验是否是电话号码
+### 校验是否是电话号码
 
 ```typescript
 function isPhoneNum(str: string): boolean;
@@ -642,9 +640,9 @@ function isPhoneNum(str: string): boolean;
 utils.isPhoneNum("123"); // false
 ```
 
-### isUrl
+## isUrl
 
-#### 校验是否是 URL
+### 校验是否是 URL
 
 ```typescript
 function isUrl(str: string): boolean;
@@ -654,9 +652,9 @@ function isUrl(str: string): boolean;
 utils.isUrl("http://git.daojia-inc.com/"); // true
 ```
 
-### session
+## session
 
-#### window.localStoreage 方法封装
+### window.localStoreage 方法封装
 
 - 没有第二个参数时为存储
 - 有第二个参数时为读取，没获取到则返回空字符串''
@@ -669,13 +667,13 @@ function session(key: string, value?: any): any;
 session("name", "小红"); // true
 ```
 
-### local
+## local
 
 - 用法同 session,是 localStorage 的存取方式
 
-### monthDays
+## monthDays
 
-#### 获取代入的时间对象的参数，当前月总共多少天
+### 获取代入的时间对象的参数，当前月总共多少天
 
 - 参数为一个时间对象
 
@@ -687,9 +685,9 @@ function monthDays(date: Date): number;
 monthDays(new Date("2020/2/11")); // 29
 ```
 
-### randomNum
+## randomNum
 
-#### 生成随机整数
+### 生成随机整数
 
 ```typescript
 function randomNum(min: number, max: number): number;
@@ -699,9 +697,9 @@ function randomNum(min: number, max: number): number;
 randomNum(2.1， 5.1); // 5
 ```
 
-### getRequest
+## getRequest
 
-#### 获取 URL 上的参数
+### 获取 URL 上的参数
 
 ```typescript
 function getRequest(param: string, search?: string): string;
@@ -711,9 +709,9 @@ function getRequest(param: string, search?: string): string;
 getRequest("page", "?page=1"); // 1
 ```
 
-### onHashChange
+## onHashChange
 
-#### 监听 location.hash 变化
+### 监听 location.hash 变化
 
 ```typescript
 export function onHashChange(callback: Function): boolean;
@@ -724,14 +722,14 @@ const callback = () => console.log("success");
 onHashChange(callback);
 ```
 
-### onPopState
+## onPopState
 
-#### 监听 popstate
+### 监听 popstate
 
-### onPushState
+## onPushState
 
-#### 监听 pushState
+### 监听 pushState
 
-### onReplaceState
+## onReplaceState
 
-#### 监听 replaceState
+### 监听 replaceState
