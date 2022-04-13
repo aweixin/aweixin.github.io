@@ -1,3 +1,85 @@
+## 下载图片
+
+```javascript
+/**
+*下载图片
+*/
+const loadImage = (src) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(img)
+        img.onerror = () => reject(`下载图片失败 ${src}`)
+        img.crossOrigin = 'anonymous'
+        img.src = src
+        if (img.complete === true) {
+            // Inline XML images may fail to parse, throwing an Error later on
+            setTimeout(() => resolve(img), 500)
+        }
+    })
+}
+
+/**
+* 绘制文字
+* @param {Object} view
+*/
+const fillText = (ctx, view) => {
+    return new Promise((resolve, reject) => {
+        ctx.save();
+        // 设置字体
+        ctx.font = `${view.fontSize || '20px'} ${view.fontFamily}`;
+        // 设置颜色
+        ctx.fillStyle = view.color || '#000';
+        // 设置水平对齐方式
+        ctx.textAlign = view.textAlign || 'left';
+        // 设置垂直对齐方式
+        ctx.textBaseline = "middle";
+        // 绘制文字（参数：要写的字，x坐标，y坐标）
+        ctx.fillText(view.text, view.x, view.y);
+        ctx.restore(); 
+        resolve();
+    });
+}
+
+
+/**
+* 绘制图片 
+*/
+const drawCanvasBgImg = () => {
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext("2d");
+    loadImage('/src/assets/logo.png').then(res => {
+        canvas.width = res.width;
+        canvas.height = res.height;
+        ctx.drawImage(res, 0, 0);
+        fillText(ctx, {
+            text: '李明',
+            x: 100,
+            y: 100,
+            fontSize: '24px',
+            color: '#fff',
+            textAlign: 'center'
+        }).then(font => {
+            fillText(ctx, {
+                text: pinyin.getFullChars('李明'),
+                x: 100,
+                y: 130,
+                fontSize: '24px',
+                fontFamily: "CATANLTN",
+                color: '#fff',
+                textAlign: 'center'
+            }).then(font => {
+                let base64 = canvas.toDataURL("image/jpeg");
+				console.log(base64);
+            })
+        })
+    })
+};
+```
+
+
+
+
+
 ## 工具方法
 
 ```js
