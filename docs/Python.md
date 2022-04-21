@@ -75,3 +75,25 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple 库名
     div > p > a > .lala 只能是下面一级 div/img
     select选择器返回永远是列表，需要通过下标提取指定对象
 ```
+
+
+
+## 具体切换系统默认python的步骤：
+>> 终端运行如下命令
+```py
+vi ~/.bash_profile
+
+alias python2='/system/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7'  // python2 的地址
+alias python3='/usr/local/Frameworks/Python.framework/Versions/3.7/bin/python3.7'  // python3 的地址
+alias python=python3  // 切换版本
+
+// 保存后运行如下命令使修改生效
+source ~/.bash_profile
+// 查看切换后的系统默认python版本
+python --version
+
+```
+
+
+
+
