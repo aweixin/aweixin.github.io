@@ -79,8 +79,9 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple 库名
 
 
 ## 具体切换系统默认python的步骤：
->> 终端运行如下命令
+> 终端运行如下命令
 ```py
+
 vi ~/.bash_profile
 
 alias python2='/system/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7'  // python2 的地址
