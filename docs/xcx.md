@@ -1143,8 +1143,8 @@ module.exports = {
 "pages/logs/logs"
 
 // packageA(分包)
-"pages/parent/parent",
-"pages/child/child"
+"packageA/parent/parent",
+"packageA/child/child"
 ```
 
 ### 1.3 在 app.json 中配置路径
@@ -1160,9 +1160,9 @@ module.exports = {
     "pages/index/index",
     "pages/logs/logs"
   ],
-	"subpackages": [
+    "subpackages": [
     {
-      "root": "pages/packageA",
+      "root": "packageA",
       "pages": [
         "child/child",
         "parent/parent"
@@ -1174,9 +1174,7 @@ module.exports = {
 
 ### 1.4 保存页面后，生成对应的文件目录
 
-配置完 app.json 文件，保存后，会发现自动生成了对应目录，如下：
-
-![](/Users/xuzhixin/code/aweixin/_media/WX20230220-114430.png)
+配置完 app.json 文件，保存后，会发现自动生成了对应目录
 
 ### 1.5 项目中使用路径
 
@@ -1195,7 +1193,7 @@ gotoChild() {
 ```js
 gotoChild() {
     wx.navigateTo({
-      url: '/pages/packageA/child/child',
+      url: '/packageA/child/child',
     })
 }
 ```
