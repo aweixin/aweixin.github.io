@@ -4,12 +4,12 @@
 //downloadSaveFile.js
 /** 
 const DownloadSaveFile = require('downloadSaveFile.js');
- 
+
 downloadSaveFile(e) {
   let url = e.currentTarget.dataset.url;
   DownloadSaveFile.downloadFile('video', url); //video或image
 }
- 
+
 */
 /**
  * 下载单个文件
@@ -46,7 +46,7 @@ function downloadFile(type, url, successc, failc) {
     );
   })
 }
- 
+
 /**
  * 下载多个文件
  * @param {string} [type]
@@ -58,7 +58,7 @@ function downloadFiles(type, urls, completec) {
   let fail = 0;
   let total = urls.length;
   let errMsgs = [];
- 
+
   checkAuth(() => {
     wx.showLoading({
       title: '正在下载',
@@ -85,7 +85,7 @@ function downloadFiles(type, urls, completec) {
     }
   })
 }
- 
+
 //保存完成
 function saveCompleted(success, fail, completec, errMsgs) {
   wx.hideLoading();
@@ -93,7 +93,7 @@ function saveCompleted(success, fail, completec, errMsgs) {
   if (errMsgs.length) {
     errMsg = errMsgs.join('\n');
   }
- 
+
   wx.showModal({
     title: `成功${success}项，失败${fail}项`,
     content: `失败信息:\n${errMsg}`,
@@ -105,7 +105,7 @@ function saveCompleted(success, fail, completec, errMsgs) {
     }
   })
 }
- 
+
 //下载文件
 function downloadSaveFile(type, url, successc, failc) {
   wx.downloadFile({
@@ -144,7 +144,7 @@ function downloadSaveFile(type, url, successc, failc) {
     }
   })
 }
- 
+
 //检查权限
 function checkAuth(gotc) {
   //查询权限
@@ -202,15 +202,15 @@ function checkAuth(gotc) {
     }
   })
 }
- 
+
 module.exports = {
   downloadFile,
   downloadFiles
 };
 ```
 
-
 ## 微信小程序处理HTML标签图片自适应
+
 ```js
 /**
  * 处理富文本里的图片宽度自适应
@@ -222,30 +222,29 @@ module.exports = {
  * @return string
  */
 function formatRichText(html) {
-	// 去掉img标签里的style、width、height属性
-	let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
-		match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
-		match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
-		match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
-		return match;
-	});
-	// 修改所有style里的width属性为max-width:100%
-	newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
-		match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
-		return match;
-	});
-	// 去掉<br/>标签
-	// newContent = newContent.replace(/<br[^>]*\/>/gi, '');
-	// img标签添加style属性：max-width:100%;height:auto
-	newContent = newContent.replace(/\<img/gi,
-	'<img style="max-width:100%;height:auto;display:block;margin:0px auto;"');
-	return newContent;
+    // 去掉img标签里的style、width、height属性
+    let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+        match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+        match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+        match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+        return match;
+    });
+    // 修改所有style里的width属性为max-width:100%
+    newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
+        match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+        return match;
+    });
+    // 去掉<br/>标签
+    // newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+    // img标签添加style属性：max-width:100%;height:auto
+    newContent = newContent.replace(/\<img/gi,
+    '<img style="max-width:100%;height:auto;display:block;margin:0px auto;"');
+    return newContent;
 }
 
 export default {
-	formatRichText,
+    formatRichText,
 };
-
 ```
 
 ## Grace
@@ -262,23 +261,20 @@ export default {
 6. 支持跨页面传值
 7. 支持mixins
 
-
-
 ### 使用
 
 1. 将 <https://github.com/wendux/grace/blob/master/dist/grace.js> 拷贝到小程序根目录下的grace目录,并命名为index.js
 2. 创建页面时用`grace.page` 替换 `Page` 即可。
 
 ## 微信小程序接口封装
-```js
 
+```js
 const host = 'host';
 // 小程序请求接口
 module.exports = {
     // 图片上传接口
     uploadFile: `${host}/upload`
 }
-
 ```
 
 ## 微信小程序方法封装
@@ -653,12 +649,12 @@ function htmlEncode(str) {
     if (str.length === 0) {
         return "";
     }
-    s = str.replace(/&/g, "&amp;");
-    s = s.replace(/</g, "&lt;");
-    s = s.replace(/>/g, "&gt;");
-    s = s.replace(/ /g, "&nbsp;");
+    s = str.replace(/&/g, "&");
+    s = s.replace(/</g, "<");
+    s = s.replace(/>/g, ">");
+    s = s.replace(/ /g, " ");
     s = s.replace(/\'/g, "&#39;"); //IE下不支持实体名称
-    s = s.replace(/\"/g, "&quot;");
+    s = s.replace(/\"/g, """);
     return s;
 }
 /**
@@ -669,16 +665,16 @@ function htmlRestore(str) {
     if (str.length === 0) {
         return "";
     }
-    s = str.replace(/&amp;/g, "&");
-    s = s.replace(/&lt;/g, "<");
-    s = s.replace(/&gt;/g, ">");
-    s = s.replace(/&nbsp;/g, " ");
+    s = str.replace(/&/g, "&");
+    s = s.replace(/</g, "<");
+    s = s.replace(/>/g, ">");
+    s = s.replace(/ /g, " ");
     s = s.replace(/&#39;/g, "\'");
-    s = s.replace(/&quot;/g, "\"");
+    s = s.replace(/"/g, "\"");
     return s;
 }
 /**
- * 去掉所有的html标签和&nbsp;之类的特殊符合
+ * 去掉所有的html标签和 之类的特殊符合
  */
 function deleteHtmlTag(str) {
     str = str.replace(/<[^>]+>|&[^>]+;/g, "").trim();
@@ -1044,12 +1040,12 @@ module.exports = {
 }
 ```
 
-
-
 ## 授权拒绝
+
 > 微信小程序授权拒绝之后解决方法
+
 ```js
-	saveImageToPhotosAlbum(option) {
+    saveImageToPhotosAlbum(option) {
         return new Promise((resolve, reject) => {
             wx.saveImageToPhotosAlbum({
                 ...option,
@@ -1123,11 +1119,83 @@ module.exports = {
     },
 ```
 
+## 微信小程序 new Date()
 
-## js 微信小程序 new Date()
 > 微信小程序 new Date() 方法在iOS设备上无效的问题的解决方法
 
 ```js
     let date = "2021-01-04 00:00"
     let now = new Date(date.replace(/-/g,'/'))
+```
+
+## 小程序分包加载
+
+### 1.1 小程序的限制
+
+1. 正常情况下，小程序对代码包的限制是：大小不超过 2M，超过这个大小无法预览，也无法上传代码
+2. 做了分包加载的情况下，限制是：每个包大小不超过 2M，所有包总共的大小不超过 16M。
+
+### 1.2 按照逻辑划分项目页面
+
+```js
+// tabBar(放入主包)
+"pages/index/index",
+"pages/logs/logs"
+
+// packageA(分包)
+"pages/parent/parent",
+"pages/child/child"
+```
+
+### 1.3 在 app.json 中配置路径
+
+配置一个 subpackages 属性，值为一个数组。 数组中的每个对象都是一个分包。 每个分包中，需要配置几个属性：
+
+1. root: 这个分包的根路径
+2. Pages: 这个分包中的页面路径，其中页面路径为分包根路径的相对路径
+
+```js
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+	"subpackages": [
+    {
+      "root": "pages/packageA",
+      "pages": [
+        "child/child",
+        "parent/parent"
+      ]
+    }
+  ],
+}
+```
+
+### 1.4 保存页面后，生成对应的文件目录
+
+配置完 app.json 文件，保存后，会发现自动生成了对应目录，如下：
+
+![](/Users/xuzhixin/code/aweixin/_media/WX20230220-114430.png)
+
+### 1.5 项目中使用路径
+
+到了这一步，其实分包已经配置完成了，但是还有一个问题需要解决： 更改项目中的引用路径，如： 原来引用的路径是这样的
+
+```js
+gotoChild() {
+    wx.navigateTo({
+      url: '/pages/child/child',
+    })
+}
+```
+
+需要更改成最新路径：
+
+```js
+gotoChild() {
+    wx.navigateTo({
+      url: '/pages/packageA/child/child',
+    })
+}
 ```
