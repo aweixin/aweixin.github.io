@@ -701,3 +701,81 @@ playerReadied(player) {
 cnpm i --save-dev vue-loader-v16
 ```
 
+## keep-alive 缓存和清除
+
+```js
+include - string | RegExp | Array。只有名称匹配的组件会被缓存。
+exclude - string | RegExp | Array。任何名称匹配的组件都不会被缓存。
+max - number | string。最多可以缓存多少组件实例。
+```
+
+封装 `useRouteCache.ts` 类文件
+
+```js
+/*
+ * @Author: Mr.xu
+ * @Date: 2023-02-22 15:02:29
+ * @LastEditors: Mr.xu
+ * @LastEditTime: 2023-02-28 12:19:57
+ * @Description:
+ */
+import { ref, nextTick } from 'vue';
+
+const caches = ref<string[]>([]);
+
+export const useRouteCache = () => {
+  return caches;
+};
+
+export const addCache = (componentName: string | string[]) => {
+  if (Array.isArray(componentName)) {
+    componentName.forEach(addCache);
+    return;
+  }
+  if (!componentName || caches.value.includes(componentName)) return;
+  caches.value.push(componentName);
+  console.log('缓存路由组件：', componentName);
+};
+
+// 移除缓存的路由组件
+export const removeCache = (componentName: string) => {
+  const index = caches.value.indexOf(componentName);
+  if (index > -1) {
+    console.log('清除缓存的路由组件：', componentName);
+    return caches.value.splice(index, 1);
+  }
+};
+
+// 移除缓存的路由组件的实例
+export const removeCacheEntry = async (componentName: string) => {
+  if (removeCache(componentName)) {
+    await nextTick();
+    addCache(componentName);
+  }
+};
+
+// 清除缓存的路由组件的实例
+export const clearEntry = () => {
+  caches.value.slice().forEach((key) => {
+    removeCacheEntry(key);
+  });
+};
+```
+
+`Layout.vue`
+
+> 引入 `useRouteCache.ts` 
+
+```vue
+<router-view v-slot="{ Component }">
+    <keep-alive :include="useRouteCache">
+      <component :is="Component" />
+    </keep-alive>
+</router-view>
+<script>
+	import {useRouteCache} from '../hooks/useRouteCache';
+</script>
+```
+
+
+
