@@ -1,6 +1,18 @@
 ## 微信小程序方法封装
 
-点击下载包[https://aweixin.github.io/lib/mini_core.zip]
+[点击下载mini_core.zip包](https://aweixin.github.io/lib/mini_core.zip)
+
+## 微信小程序 别名配置
+> 跟目录 app.json 中 配置
+
+```js
+      {
+            "resolveAlias": {
+                  "~/*": "/*",
+                  "~/origin/*": "origin/*",
+            }
+      }
+```
 
 ## 微信小程序下载文件视频，图片
 
