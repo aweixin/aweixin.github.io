@@ -2,7 +2,7 @@
 
 之前我们所学的 `useMemo` 能够达到缓存某个变量值的效果，而当前要学习的 `useCallback` 用来对组件内的函数进行缓存，它返回的是缓存的函数。它的语法格式如下：
 
-```React JSX
+```javaScript
 const memoCallback = useCallback(cb, array)
 ```
 
@@ -18,7 +18,7 @@ useCallback 会返回一个 memorized 回调函数供组件使用，从而防止
 
 接下来，我们通过下面的例子演示使用 useCallback 的必要性：当输入框触发 onChange 事件时，会给 kw 重新赋值。kw 值的改变会导致组件的 rerender，而组件的 rerender 会导致反复创建 **onKwChange** 函数并添加到 Set 集合中，造成了不必要的内存浪费。代码如下：
 
-```React JSX
+```javaScript
 import React, { useState, useCallback } from 'react'
 
 // 用来存储函数的 set 集合
@@ -66,7 +66,7 @@ export const Search: React.FC = () => {
 
 为了防止 `Search` 组件 rerender 时每次都会重新创建 `onKwChange` 函数，我们可以使用 useCallback 对这个函数进行缓存。改造后的代码如下：
 
-```React JSX
+```javaScript
 import React, { useState, useCallback } from 'react'
 
 // 用来存储函数的 set 集合
@@ -118,7 +118,7 @@ export const Search: React.FC = () => {
 
 1. 导入需要的 hooks 函数，并定义需要的 TS 类型：
 
-```React JSX
+```javaScript
 import React, { useEffect, useState, useCallback } from 'react'
 
 // 文本框组件的 props 类型
@@ -131,7 +131,7 @@ type WordType = { id: number; word: string }
 ```
 2. 定义 **SearchInput** 搜索框子组件，接收父组件传递进来的 **onChange** 处理函数，每当 input 触发 onChange 事件时，调用 `props.onChange` 进行处理：
 
-```React JSX
+```javaScript
 // 子组件
 
 const SearchInput: React.FC = (props) => {
@@ -146,7 +146,7 @@ const SearchInput: React.FC = (props) => {
 ```
 3. 定义 **SearchResult** 搜索结果子组件，接收父组件传递进来的 **query** 搜索关键字，在 useEffect 中监听 `props.query` 的变化，从而请求搜索的结果：
 
-```React JSX
+```javaScript
 // 子组件：搜索结果
 
 const SearchResult: React.FC<{ query: string }> = (props) => {
@@ -183,7 +183,7 @@ const SearchResult: React.FC<{ query: string }> = (props) => {
 ```
 4. 定义父组件 **SearchBox** 并渲染 **SearchInput** 组件和 **SearchResult** 组件。在父组件中监听 **SearchInput** 的 `onChange` 事件，并把父组件中定义的处理函数 `onKwChange` 传递进去。同时，把父组件中定义的搜索关键字 `kw` 传递给 **SearchResult** 组件。示例代码如下：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const SearchBox: React.FC = () => {
@@ -224,7 +224,7 @@ export const SearchBox: React.FC = () => {
 
 1. 首先，我们需要让子组件 **SearchInput** 被缓存，所以我们需要使用 `React.memo` 对其进行改造：
 
-```React JSX
+```javaScript
 // 子组件：搜索框
 
 const SearchInput: React.FC<SearchInputType> = React.memo((props) => {
@@ -245,7 +245,7 @@ const SearchInput: React.FC<SearchInputType> = React.memo((props) => {
 
     在父组件中针对 **onKwChange** 调用 useCallback，示例代码如下：
 
-```React JSX
+```javaScript
 const onKwChange = useCallback((e: React.ChangeEvent) => {
 
   setKw(e.currentTarget.value)

@@ -1,12 +1,12 @@
 **useState**，能让函数组件拥有自己的状态，因此，它是一个管理状态的 hooks API。通过 useState 可以实现状态的初始化、读取、更新。基本语法格式如下：
 
-```React JSX
+```javaScript
 const [状态名, set函数] = useState(初始值)
 ```
 
 其中：状态名所代表的数据，可以被函数组件使用；如果要修改状态名所代表的数据，需要调用 **set 函数** 进行修改。例如：
 
-```React JSX
+```javaScript
 import { useState } from 'react'
 
 export function Count() {
@@ -40,7 +40,7 @@ export function Count() {
 
 在函数组件中使用 setState 定义状态之后，每当状态发生变化，都会触发函数组件的重新执行，**从而根据最新的数据更新渲染 DOM 结构**。例如：
 
-```React JSX
+```javaScript
 import { useState } from 'react'
 
 export function Count() {
@@ -86,13 +86,13 @@ export function Count() {
 
 在使用 useState 定义状态时，除了可以**直接给定初始值**，还可以通过**函数返回值**的形式，为状态赋初始值，语法格式如下：
 
-```React JSX
+```javaScript
 const [value, setValue] = useState(() => 初始值)
 ```
 
 例如：
 
-```React JSX
+```javaScript
 export const DateCom: React.FC = () => {
 
   // const [date] = useState({ year: 2023, month: 9, day: 11 })
@@ -130,7 +130,7 @@ export const DateCom: React.FC = () => {
 
 调用 useState() 会返回一个**变更状态的函数**，这个函数内部是以**异步的形式**修改状态的，所以修改状态后**无法立即拿到最新的状态**，例如：
 
-```React JSX
+```javaScript
 export const Count: React.FC = () => {
 
   const [count, setCount] = useState(() => 0)

@@ -1,6 +1,6 @@
 useRef 函数返回一个可变的 ref 对象，该对象只有一个 **current** 属性。可以在调用 useRef 函数时为其指定初始值。并且这个返回的 ref 对象在组件的整个生命周期内保持不变。语法格式如下：
 
-```React JSX
+```javaScript
 // 1. 导入 useRef
 
 import { useRef } from 'react'
@@ -23,7 +23,7 @@ useRef 函数用来解决以下两个问题：
 
 下面的代码演示了如何获取 Input 元素的实例，并调用其 DOM API。
 
-```React JSX
+```javaScript
 import React, { useRef } from 'react'
 
 export const InputFocus: React.FC = () => {
@@ -61,7 +61,7 @@ export const InputFocus: React.FC = () => {
 
 基于 useRef 创建名为 `prevCountRef` 的数据对象，用来存储上一次的旧 count 值。每当点击按钮触发 count 自增时，都把最新的旧值赋值给 `prevCountRef.current` 即可：
 
-```React JSX
+```javaScript
 export const Counter: React.FC = () => {
 
   // 默认值为 0
@@ -109,7 +109,7 @@ export const Counter: React.FC = () => {
 
 在 **RefTimer** 组件中，点击 **+1 按钮**，会让 count 值自增，**从而触发 RefTimer 组件的 rerender**。但是，我们发现 RefTimer 组件中的时间戳保持不变，这说明组件每次渲染，**不会重复调用 useRef 函数进行初始化**。示例代码如下：
 
-```React JSX
+```javaScript
 export const RefTimer: React.FC = () => {
 
   const [count, setCount] = useState(0)
@@ -146,7 +146,7 @@ export const RefTimer: React.FC = () => {
 
 这证明了 ref.current 变化时不会造成组件的 rerender，示例代码如下：
 
-```React JSX
+```javaScript
 export const RefTimer: React.FC = () => {
 
   const [count, setCount] = useState(0)
@@ -188,7 +188,7 @@ export const RefTimer: React.FC = () => {
 
 由于 ref.current 值的变化不会造成组件的 rerender，而且 React 也不会跟踪 ref.current 的变化，因此 ref.current 不可以作为其它 hooks（useMemo、useCallback、useEffect 等） 的依赖项。
 
-```React JSX
+```javaScript
 export const RefTimer: React.FC = () => {
 
   const [count, setCount] = useState(0)

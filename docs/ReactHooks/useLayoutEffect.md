@@ -2,7 +2,7 @@
 
 在搜索框案例中，SearchResult 组件会根据用户输入的**关键字**，循环生成大量的 p 标签，因此它是一个渲染比较耗时的组件。代码如下：
 
-```React JSX
+```javaScript
 import React, { useState } from 'react'
 
 // 父组件
@@ -52,7 +52,7 @@ const SearchResult: React.FC<{ query: string }> = (props) => {
 
 注意，此案例不能使用 `useTransition` 进行性能优化，因为 `useTransition` 会把状态更新标记为**低优先级**，**被标记为 transition 的状态更新将被其他状态更新打断**。因此在高频率输入时，会导致**中间的输入状态丢失**的问题。例如：
 
-```React JSX
+```javaScript
 import React, { useState, useTransition } from 'react'
 
 // 父组件
@@ -114,7 +114,7 @@ const SearchResult: React.FC<{ query: string }> = (props) => {
 
 `useDeferredValue` 提供一个 state 的延迟版本，根据其返回的**延迟的 state** 能够**推迟更新 UI 中的某一部分**，从而达到性能优化的目的。语法格式如下：
 
-```React JSX
+```javaScript
 import { useState, useDeferredValue } from 'react';
 
 function SearchPage() {
@@ -139,7 +139,7 @@ function SearchPage() {
 
 按需导入 `useDeferredValue` 这个 hooks API，并基于它进行搜索功能的性能优化：
 
-```React JSX
+```javaScript
 // 1. 按需导入 useDeferredValue 这个 Hooks API
 
 import React, { useState, useDeferredValue } from 'react'
@@ -201,7 +201,7 @@ const SearchResult: React.FC<{ query: string }> = React.memo((props) => {
 
 当 `kw` 的值频繁更新时，`deferredKw` 的值会明显滞后，此时用户在页面上看到的列表数据并不是最新的，为了防止用户感到困惑，我们可以给内容添加 opacity 透明度，**表明当前看到的内容已过时**。示例代码如下：
 
-```React JSX
+```javaScript
 // 1. 按需导入 useDeferredValue 这个 Hooks API
 
 import React, { useState, useDeferredValue } from 'react'

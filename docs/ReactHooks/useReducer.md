@@ -8,7 +8,7 @@
 
 useReducer 的基础语法如下：
 
-```React JSX
+```javaScript
 const [state, dispatch] = useReducer(reducer, initState, initAction?)
 ```
 
@@ -25,7 +25,7 @@ const [state, dispatch] = useReducer(reducer, initState, initAction?)
 
 1. 定义名为 `Father` 的父组件如下：
 
-```React JSX
+```javaScript
 import React from 'react'
 
 // 父组件
@@ -54,7 +54,7 @@ export const Father: React.FC = () => {
 ```
 2. 定义名为 `Son1` 和 `Son2` 的两个子组件如下：
 
-```React JSX
+```javaScript
 // 子组件1
 
 const Son1: React.FC = () => {
@@ -109,17 +109,17 @@ const Son2: React.FC = () => {
 
 1. 按需导入 `useReducer` 函数：
 
-```React JSX
+```javaScript
 import React, { useReducer } from 'react'
 ```
 2. 定义**初始数据**：
 
-```React JSX
+```javaScript
 const defaultState = { name: 'liulongbin', age: 16 }
 ```
 3. 定义 `reducer` 函数，它的作用是：**根据旧状态，进行一系列处理，最终返回新状态**：
 
-```React JSX
+```javaScript
 const reducer = (prevState) => {
 
   console.log('触发了 reducer 函数')
@@ -130,7 +130,7 @@ const reducer = (prevState) => {
 ```
 4. 在 `Father` 组件中，调用 `useReducer(reducerFn, 初始状态)` 函数，并得到 reducer 返回的状态：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -163,7 +163,7 @@ export const Father: React.FC = () => {
 ```
 5. 为 reducer 中的 initState 指定数据类型：
 
-```React JSX
+```javaScript
 // 定义状态的数据类型
 
 type UserType = typeof defaultState
@@ -183,7 +183,7 @@ const reducer = (prevState: UserType) => {
 
     接下来，在 `Father` 组件中使用 state 时，就可以出现类型的智能提示啦：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -217,7 +217,7 @@ export const Father: React.FC = () => {
 
 1. 定义名为 `initAction` 的处理函数，如果初始数据中的 age 为小数、负数、或 0 时，对 age 进行非法值的处理：
 
-```React JSX
+```javaScript
 const initAction = (initState: UserType) => {
 
   // 把 return 的对象，作为 useReducer 的初始值
@@ -228,7 +228,7 @@ const initAction = (initState: UserType) => {
 ```
 2. 在 `Father` 组件中，使用步骤1声明的 `initAction` 函数如下：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -248,7 +248,7 @@ export const Father: React.FC = () => {
 
 #### 4.1 错误示范
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -298,14 +298,14 @@ export const Father: React.FC = () => {
 
 1. 为了能够触发 reducer 函数的重新执行，我们需要在调用 `useReducer()` 后接收返回的 `dispatch` 函数。示例代码如下：
 
-```React JSX
+```javaScript
 // Father 父组件
 
 const [state, dispatch] = useReducer(reducer, defaultState, initAction)
 ```
 2. 在 button 按钮的点击事件处理函数中，调用 `dispatch()` 函数，从而触发 reducer 函数的重新计算：
 
-```React JSX
+```javaScript
 // Father 父组件
 
 const onChangeName = () => {
@@ -320,7 +320,7 @@ const onChangeName = () => {
 
     会触发 reducer 函数的重新执行，并打印 reducer 中的 `console.log()`，代码如下：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType) => {
 
   console.log('触发了 reducer 函数')
@@ -334,7 +334,7 @@ const reducer = (prevState: UserType) => {
 
 1. 在 Father 父组件按钮的点击事件处理函数 `onChangeName` 中，调用 **dispatch()** 函数并把参数传递给 **reducer** 的第2个形参，代码如下：
 
-```React JSX
+```javaScript
 const onChangeName = () => {
 
   // 注意：参数的格式为 { type, payload? }
@@ -351,7 +351,7 @@ const onChangeName = () => {
 ```
 2. 修改 reducer 函数的形参，添加名为 `action` 的第2个形参，用来接收 `dispatch` 传递过来的数据：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType, action) => {
 
   // 打印 action 的值，终端显示的值为：
@@ -366,7 +366,7 @@ const reducer = (prevState: UserType, action) => {
 ```
 3. 在 reducer 中，根据接收到的 `action.type` 标识符，**决定进行怎样的更新操作**，最终 return 一个计算好的新状态。示例代码如下：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType, action) => {
 
   console.log('触发了 reducer 函数', action)
@@ -397,7 +397,7 @@ const reducer = (prevState: UserType, action) => {
 ```
 4. 在上述的 `switch...case...` 代码期间，没有任何 TS 的类型提示，这在大型项目中是致命的。因此，我们需要为 reducer 函数的第2个形参 **action** 指定操作的类型：
 
-```React JSX
+```javaScript
 // 1. 定义 action 的类型
 
 type ActionType = { type: 'UPDATE_NAME'; payload: string }
@@ -427,7 +427,7 @@ const reducer = (prevState: UserType, action: ActionType) => {
 
     同时，在 Father 组件的 `onChangeName` 处理函数内，调用 `dispatch()` 时也有了类型提示：
 
-```React JSX
+```javaScript
 const onChangeName = () => {
 
   dispatch({ type: 'UPDATE_NAME', payload: '刘龙彬' })
@@ -441,7 +441,7 @@ const onChangeName = () => {
 
 1. 在 Father 父组件中，通过展开运算符把 state 数据对象绑定为 `Son1` 和 `Son2` 的 props 属性：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -478,7 +478,7 @@ export const Father: React.FC = () => {
 ```
 2. 在子组件中，指定 props 的类型为 `React.FC<UserType>`，并使用 props 接收和渲染数据：
 
-```React JSX
+```javaScript
 // 子组件1
 
 const Son1: React.FC<UserType> = (props) => {
@@ -522,14 +522,14 @@ const Son2: React.FC<UserType> = (props) => {
 
 1. 扩充 `ActionType` 的类型如下：
 
-```React JSX
+```javaScript
 // 定义 action 的类型
 
 type ActionType = { type: 'UPDATE_NAME'; payload: string } | { type: 'INCREMENT'; payload: number }
 ```
 2. 在 `reducer` 中添加 `INCREMENT` 的 `case` 匹配：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType, action: ActionType) => {
 
   console.log('触发了 reducer 函数', action)
@@ -556,7 +556,7 @@ const reducer = (prevState: UserType, action: ActionType) => {
 ```
 3. 在子组件 `Son1` 中添加 `+1` 的 button 按钮，并绑定点击事件处理函数：
 
-```React JSX
+```javaScript
 // 子组件1
 
 const Son1: React.FC<UserType> = (props) => {
@@ -581,7 +581,7 @@ const Son1: React.FC<UserType> = (props) => {
 ```
 4. 现在的问题是：子组件 Son1 中无法调用到父组件的 `dispatch` 函数。为了解决这个问题，我们需要在 Father 父组件中，通过 props 把父组件中的 `dispatch` 传递给子组件：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -618,7 +618,7 @@ export const Father: React.FC = () => {
 ```
 5. 在 `Son1` 子组件中，扩充 `React.FC<UserType>` 的类型，并从 `props` 中把 **dispatch** 和**用户信息对象**分离出来：
 
-```React JSX
+```javaScript
 // 子组件1
 
 const Son1: React.FC<UserType & { dispatch: React.Dispatch<ActionType> }> = (props) => {
@@ -648,14 +648,14 @@ const Son1: React.FC<UserType & { dispatch: React.Dispatch<ActionType> }> = (pro
 
 1. 扩充 `ActionType` 的类型如下：
 
-```React JSX
+```javaScript
 // 定义 action 的类型
 
 type ActionType = { type: 'UPDATE_NAME'; payload: string } | { type: 'INCREMENT'; payload: number } | { type: 'DECREMENT'; payload: number }
 ```
 2. 在 `reducer` 中添加 `DECREMENT` 的 `case` 匹配：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType, action: ActionType) => {
 
   console.log('触发了 reducer 函数', action)
@@ -686,7 +686,7 @@ const reducer = (prevState: UserType, action: ActionType) => {
 ```
 3. 在子组件 `Son2` 中添加 `-5` 的 button 按钮，并绑定点击事件处理函数：
 
-```React JSX
+```javaScript
 // 子组件2
 
 const Son2: React.FC<UserType> = (props) => {
@@ -711,7 +711,7 @@ const Son2: React.FC<UserType> = (props) => {
 ```
 4. 现在的问题是：子组件 Son2 中无法调用到父组件的 `dispatch` 函数。为了解决这个问题，我们需要在 Father 父组件中，通过 props 把父组件中的 `dispatch` 传递给子组件：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -748,7 +748,7 @@ export const Father: React.FC = () => {
 ```
 5. 在 `Son2` 子组件中，扩充 `React.FC<UserType>` 的类型，并从 `props` 中把 **dispatch** 和**用户信息对象**分离出来：
 
-```React JSX
+```javaScript
 // 子组件2
 
 const Son2: React.FC<UserType & { dispatch: React.Dispatch<ActionType> }> = (props) => {
@@ -778,14 +778,14 @@ const Son2: React.FC<UserType & { dispatch: React.Dispatch<ActionType> }> = (pro
 
 1. 扩充 `ActionType` 的类型如下：
 
-```React JSX
+```javaScript
 // 定义 action 的类型
 
 type ActionType = { type: 'UPDATE_NAME'; payload: string } | { type: 'INCREMENT'; payload: number } | { type: 'DECREMENT'; payload: number } | { type: 'RESET' }
 ```
 2. 在 `reducer` 中添加 `RESET` 的 `case` 匹配：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType, action: ActionType) => {
 
   console.log('触发了 reducer 函数', action)
@@ -820,7 +820,7 @@ const reducer = (prevState: UserType, action: ActionType) => {
 ```
 3. 在 `GrandSon` 组件中，添加重置按钮，并绑定点击事件处理函数：
 
-```React JSX
+```javaScript
 const GrandSon: React.FC<{ dispatch: React.Dispatch<ActionType> }> = (props) => {
 
   const reset = () => props.dispatch({ type: 'RESET' })
@@ -844,12 +844,12 @@ const GrandSon: React.FC<{ dispatch: React.Dispatch<ActionType> }> = (props) => 
 
 1. 安装 immer 相关的依赖包：
 
-```React JSX
+```javaScript
 npm install immer use-immer -S
 ```
 2. 从 `use-immer` 中导入 `useImmerReducer` 函数，并替换掉 React 官方的 `useReducer` 函数的调用：
 
-```React JSX
+```javaScript
 // 1. 导入 useImmerReducer
 
 import { useImmerReducer } from 'use-immer'
@@ -866,7 +866,7 @@ export const Father: React.FC = () => {
 ```
 3. 修改 reducer 函数中的业务逻辑，`case` 代码块中不再需要 return 不可变的新对象了，只需要在 prevState 上进行修改即可。**Immer 内部会复制并返回新对象**，因此降低了用户的心智负担。改造后的 reducer 代码如下：
 
-```React JSX
+```javaScript
 const reducer = (prevState: UserType, action: ActionType) => {
 
   console.log('触发了 reducer 函数', action)

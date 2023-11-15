@@ -1,6 +1,6 @@
 进一步改造前面的案例：我们希望在 `Father` 组件中添加一个“计算属性”，根据 flag 值的真假，动态返回一段文本内容，并把计算的结果显示到页面上。示例代码如下：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -54,7 +54,7 @@ export const Father: React.FC = () => {
 
 useMemo 的语法格式如下：
 
-```React JSX
+```javaScript
 const memorizedValue = useMemo(cb, array)
 
 const memoValue = useMemo(() => {
@@ -76,12 +76,12 @@ const memoValue = useMemo(() => {
 
 1. 导入 useMemo：
 
-```React JSX
+```javaScript
 import React, { useEffect, useState, useMemo } from 'react'
 ```
 2. 在 Father 组件中，使用 `useMemo` 对 `tips` 进行改造：
 
-```React JSX
+```javaScript
 // 根据布尔值进行计算，动态返回内容
 
 const tips = useMemo(() => {

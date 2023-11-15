@@ -4,7 +4,7 @@ React 官方提供 useImperativeHandle 的目的，就是让你在使用 ref 时
 
 它的语法结构如下：
 
-```React JSX
+```javaScript
 useImperativeHandle(通过forwardRef接收到的父组件的ref对象, () => 自定义ref对象, [依赖项数组])
 ```
 
@@ -14,7 +14,7 @@ useImperativeHandle(通过forwardRef接收到的父组件的ref对象, () => 自
 
 在被 `React.forwardRef()` 包裹的组件中，需要结合 `useImperativeHandle` 这个 hooks API，向外按需暴露子组件内的成员：
 
-```React JSX
+```javaScript
 import React, { useRef, useState, useImperativeHandle } from 'react'
 
 // 子组件
@@ -64,7 +64,7 @@ const Child = React.forwardRef((_, ref) => {
 
 在子组件中，向外暴露 count 和 setCount 这两个成员：
 
-```React JSX
+```javaScript
 // 子组件
 
 const Child = React.forwardRef((_, ref) => {
@@ -106,7 +106,7 @@ const Child = React.forwardRef((_, ref) => {
 
 在父组件中，添加一个重置按钮，当点击重置按钮时，调用 ref 向外暴露的 setCount 函数，把子组件内部的 count 重置为 0。示例代码如下：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -158,7 +158,7 @@ export const Father: React.FC = () => {
 
 在 Child 子组件中，我们希望对外暴露一个重置 `count` 为 0 的函数，而不希望直接把 `setCount()` 暴露出去，因为父组件调用 `setCount()` 时可以传任何数值。因此，我们可以基于 useImperativeHandle，向外提供一个 `reset()` 函数而非直接把 `setCount()` 暴露出去：
 
-```React JSX
+```javaScript
 // 子组件
 
 const Child = React.forwardRef((_, ref) => {
@@ -202,7 +202,7 @@ const Child = React.forwardRef((_, ref) => {
 
 在父组件中，调用 ref.current.reset() 即可把数据重置为 0：
 
-```React JSX
+```javaScript
 // 父组件
 
 export const Father: React.FC = () => {
@@ -254,7 +254,7 @@ export const Father: React.FC = () => {
 
 再来回顾一下 useImperativeHandle 的参数项：
 
-```React JSX
+```javaScript
 useImperativeHandle(ref, createHandle, [deps])
 ```
 
@@ -266,7 +266,7 @@ useImperativeHandle(ref, createHandle, [deps])
 
 1. **空数组**：只在子组件首次被渲染时，执行 `useImperativeHandle` 中的 fn 回调，从而把 return 的对象作为父组件接收到的 ref。例如：
 
-```React JSX
+```javaScript
 import React, { useState, useImperativeHandle } from 'react'
 
 // 子组件
@@ -327,7 +327,7 @@ const Child = React.forwardRef((_, ref) => {
 ```
 2. **依赖项数组**：子组件首次被渲染时，会依赖项改变时，会执行 `useImperativeHandle` 中的 fn 回调，从而让父组件通过 ref 能拿到依赖项的新值。例如：
 
-```React JSX
+```javaScript
 import React, { useState, useImperativeHandle } from 'react'
 
 // 子组件
@@ -400,7 +400,7 @@ const Child = React.forwardRef((_, ref) => {
 ```
 3. **省略依赖项数组**（省略第三个参数）：此时，组件内任何 state 的变化，都会导致 `useImperativeHandle` 中的回调的重新执行。示例代码如下：
 
-```React JSX
+```javaScript
 import React, { useState, useImperativeHandle } from 'react'
 
 // 子组件

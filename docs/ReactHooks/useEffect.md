@@ -2,13 +2,13 @@
 
 为了能够监听到状态的变化，react 提供了 **useEffect** 函数。**它能够监听依赖项状态的变化，并执行对应的回调函数**。基本语法格式如下：
 
-```React JSX
+```javaScript
 useEffect(() => { /* 依赖项变化时，要触发的回调函数 */ }, [依赖项])
 ```
 
 例如：
 
-```React JSX
+```javaScript
 export const Count: React.FC = () => {
 
   const [count, setCount] = useState(() => 0)
@@ -50,7 +50,7 @@ export const Count: React.FC = () => {
 
 如果要更新对象类型的值，并触发组件的重新渲染，则必须使用**展开运算符**或**Object.assign()**生成一个新对象，用新对象覆盖旧对象，才能正常触发组件的重新渲染。示例代码如下：
 
-```React JSX
+```javaScript
 export const UserInfo: React.FC = () => {
 
   const [user, setUser] = useState({
@@ -108,7 +108,7 @@ export const UserInfo: React.FC = () => {
 
 当连续多次**以相同的操作**更新状态值时，React 内部会对传递过来的新值进行比较，如果值相同，则会屏蔽后续的更新行为，从而防止组件频繁渲染的问题。这虽然提高了性能，但也带来了一个使用误区，例如：
 
-```React JSX
+```javaScript
 export const Count: React.FC = () => {
 
   const [count, setCount] = useState(() => 0)
@@ -146,7 +146,7 @@ export const Count: React.FC = () => {
 
 为了解决上述的问题，我们可以使用**函数的方式**给状态赋新值。当函数执行时才通过函数的形参，拿到当前的状态值，并基于它返回新的状态值。示例代码如下：
 
-```React JSX
+```javaScript
 export const Count: React.FC = () => {
 
   const [count, setCount] = useState(() => 0)
@@ -180,7 +180,7 @@ export const Count: React.FC = () => {
 
 在函数组件中，我们可以通过 useState 来**模拟 forceUpdate 的强制刷新操作**。因为只要 useState 的状态发生了变化，就会触发函数组件的重新渲染，从而达到强制刷新的目的。具体的代码示例如下：
 
-```React JSX
+```javaScript
 export const FUpdate: React.FC = () => {
 
   const [, forceUpdate] = useState({})

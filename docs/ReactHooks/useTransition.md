@@ -4,7 +4,7 @@
 
 例如有以下3个标签页组件，分别是 `Home`、`Movie`、`About`，其中 Movie 是一个渲染特别耗时的组件，在渲染 Movie 组件期间页面的 UI 会被阻塞，用户会感觉页面十分卡顿，示例代码如下：
 
-```React JSX
+```javaScript
 import React, { useState } from 'react'
 
 export const TabsContainer: React.FC = () => {
@@ -148,7 +148,7 @@ const AboutTab: React.FC = () => {
 
 ### 2. 语法格式
 
-```React JSX
+```javaScript
 import { useTransition } from 'react';
 
 function TabContainer() {
@@ -173,7 +173,7 @@ function TabContainer() {
 
 修改 `TabsContainer` 组件，使用 `useTransition` 把点击按钮后为 `activeTab` 赋值的操作，标记为**低优先级**。此时 React 会优先响应用户对界面的其它操作，从而保证 UI 不被阻塞：
 
-```React JSX
+```javaScript
 import React, { useState, useTransition } from 'react'
 
 export const TabsContainer: React.FC = () => {
@@ -207,7 +207,7 @@ export const TabsContainer: React.FC = () => {
 
 为了能够使用 `isPending` 的状态为按钮添加 `loading` 效果，我们需要把 `useTransition` 的调用从 `TabsContainer` 组件中挪到 `TabButton` 组件中：
 
-```React JSX
+```javaScript
 // Button 组件 props 的 TS 类型
 
 type TabButtonType = React.PropsWithChildren & { isActive: boolean; onClick: () => void }
