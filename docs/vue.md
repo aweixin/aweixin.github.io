@@ -1,3 +1,315 @@
+## aliyunOss 上传
+
+```JavaScript
+import ApiService from "@/core/services/ApiService"
+import moment from "moment"
+import OSS from "ali-oss"
+import alertModal from "@/core/plugins/alertModal"
+
+// oss配置 上传目录 例如：face appIcon
+export const OSS_PATH_NAME = ["apps", "datasets", "avatar"]
+
+/*
+ * @Author: Mr.xu
+ * @Date: 2023-05-30 16:51:28
+ * @LastEditors: Mr.xu
+ * @LastEditTime: 2023-06-01 16:21:36
+ * @Description:
+ */
+const aliyunOssAuth = (path: string) => {
+      return ApiService.post("/portal/file/getAuthInfo", { path: path })
+}
+
+/**
+ *删除已过期的数据
+ * @param {string} key
+ */
+const delsys_expire = (key: string) => {
+      let data = window.localStorage.getItem(key + "_expire")
+      if (moment(data).isBefore(moment())) {
+            window.localStorage.removeItem(key)
+            window.localStorage.removeItem(key + "_expire")
+      }
+}
+
+const get_EXPIRE = (path: string) => "aliyunoss_" + path
+
+export const createOss = async (path: string) => {
+      delsys_expire(get_EXPIRE(path))
+      const afmOss = window.localStorage.getItem(get_EXPIRE(path)) && JSON.parse(window.localStorage.getItem(get_EXPIRE(path)) as string)
+      if (afmOss) {
+            const client = new OSS({
+                  accessKeyId: afmOss.accessKeyId,
+                  accessKeySecret: afmOss.accessKeySecret,
+                  // 从STS服务获取的安全令牌（SecurityToken）。
+                  stsToken: afmOss.stsToken,
+                  // 填写Bucket所在地域。以华东1（杭州）为例，设置region为oss-cn-hangzhou。
+                  region: afmOss.region,
+                  endpoint: afmOss.endpoint,
+                  // 填写Bucket名称，例如examplebucket。
+                  bucket: afmOss.bucket,
+                  cname: true,
+            })
+            return client
+      }
+      const result = await aliyunOssAuth(path)
+      const client = new OSS({
+            accessKeyId: result.data.accessKeyId,
+            accessKeySecret: result.data.accessKeySecret,
+            // 从STS服务获取的安全令牌（SecurityToken）。
+            stsToken: result.data.stsToken,
+            // 填写Bucket所在地域。以华东1（杭州）为例，设置region为oss-cn-hangzhou。
+            region: result.data.region,
+            endpoint: result.data.endpoint,
+            // 填写Bucket名称，例如examplebucket。
+            bucket: result.data.bucket,
+            cname: true,
+      })
+      window.localStorage.setItem(get_EXPIRE(path), JSON.stringify(result.data))
+      window.localStorage.setItem(get_EXPIRE(path) + "_expire", moment().add(result.data.durationSeconds, "seconds").format())
+      return client
+}
+const getFileSuffix = (fileName: string) => {
+      const name = fileName.lastIndexOf(".") //取到文件名开始到最后一个点的长度
+      const length = fileName.length
+      const fileSuffix = fileName.substring(name, length)
+      return fileSuffix
+}
+/**
+ * oss文件名获取随机
+ */
+const random_string = (len: number) => {
+      len = len || 32
+      const chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"
+      const maxPos = chars.length
+      let pwd = ""
+      for (let i = 0; i < len; i++) {
+            pwd += chars.charAt(Math.floor(Math.random() * maxPos))
+      }
+      return pwd
+}
+/**
+ * 获取文件路径
+ * @param {*} orangeName
+ * @return {*} moment().format('YYYYMMDD')
+ */
+export const getFilePath = (orangeName: string, path: string) => {
+      const fileName = moment().format("YYYYMMDD") + "/" + random_string(32) + getFileSuffix(orangeName)
+      const afmOss = window.localStorage.getItem(get_EXPIRE(path)) && JSON.parse(window.localStorage.getItem(get_EXPIRE(path)) as string)
+      const result = afmOss.filePath + fileName
+      return result
+}
+
+/**
+ * 阿里云Oss 上传文件
+ * @param {string} file
+ * @param {string} path  例如：face,apps 文件目录
+ * @param {string} onprogress  上传进度 不必填
+ * @return {string} 文件路径
+ * */
+export const aliyunUploadFile = (file: any, path: string, onprogress?: any) => {
+      return new Promise(async (resolve, reject) => {
+            try {
+                  if (!OSS_PATH_NAME.includes(path)) {
+                        ElMessage.error(`请在api/aliyunOssAuth.ts中声明 ${path} 文件目录`)
+                        return false
+                  }
+                  let ossClient = await createOss(path)
+                  let filePath = getFilePath(file.name, path)
+                  console.log(filePath)
+                  //  开始上传
+                  ossClient
+                        .multipartUpload(filePath, file, {
+                              progress: onprogress,
+                        })
+                        .then((e: any) => {
+                              console.log(e.res)
+                              const _responseFileUri = e.res.requestUrls[0].split("?")[0]
+                              resolve(_responseFileUri)
+                        })
+            } catch (error) {
+                  reject("发生异常" + error)
+                  alertModal.Toast("发生异常" + error, "error", 0)
+                  console.log("发生异常" + error)
+            }
+      })
+}
+
+```
+
+上传组件
+
+```JavaScript
+<template>
+      <div>
+            <el-upload
+                  action=""
+                  :multiple="multiple"
+                  :accept="accept"
+                  :limit="limit"
+                  :name="'file'"
+                  :show-file-list="showList"
+                  :on-exceed="handleExceed"
+                  :http-request="fileUpLoad"
+                  :before-upload="beforeAvatarUpload"
+            >
+                  <slot />
+            </el-upload>
+      </div>
+</template>
+
+<script setup lang="ts">
+      const emit = defineEmits(["success"])
+      const props = defineProps({
+            path: {
+                  type: String,
+                  required: true,
+            },
+            /**
+             * 是否多选
+             */
+            multiple: {
+                  type: Boolean,
+                  default: false,
+            },
+            /**
+             * 所有类型
+             */
+            accept: {
+                  type: String,
+                  default: "",
+            },
+            /**
+             * 限制上传数量
+             */
+            limit: {
+                  type: Number,
+                  default: 1,
+            },
+            /**
+             * 最大上传大小 10 M
+             */
+            Maxsize: {
+                  type: Number,
+                  default: 10,
+            },
+            showList: {
+                  type: Boolean,
+                  default: false,
+            },
+      })
+
+      // 超出限制
+      const handleExceed = (files: any, uploadFiles: any) => {
+            ElMessage.warning(`限制是${props.limit}，这次你选择了${files.length}个文件，一共加起来${files.length + uploadFiles.length}个`)
+      }
+
+      const beforeAvatarUpload = (rawFile: any) => {
+            console.log("beforeAvatarUpload:", rawFile)
+            if (rawFile.size / 1024 / 1024 > props.Maxsize) {
+                  ElMessage.error(`文件大小不能超过 ${props.Maxsize}MB!`)
+                  return false
+            }
+      }
+
+      // 上传oss
+      const fileUpLoad = async (option: any) => {
+            const file = await aliyunUploadFile(option.file, props.path)
+            emit("success", file)
+      }
+</script>
+
+<style scoped></style>
+
+```
+
+上传进度监听
+
+```JavaScript
+const result = await aliyunUploadFile(file, "datasets", (p: any, _checkpoint: any) => {
+      percent.value = Math.floor(p * 100)
+      console.log("上传文件进度：", percent.value)
+})
+console.log("文件返回：", result)
+```
+
+
+
+
+## vite 模块自动导入 
+> 安装 unplugin-auto-import
+
+```JavaScript
+cnpm i -D unplugin-auto-import
+```
+
+> vite.config.js 配置
+
+导入安装模块
+
+```JavaScript
+import AutoImport from "unplugin-auto-import/vite"
+
+AutoImport({
+  imports: ["vue", "vue-router"],
+  // 可以选择auto-import.d.ts生成的位置，使用ts建议设置为'src/auto-import.d.ts'
+  dts: "src/auto-import.d.ts",
+  // 查询本地模块
+  dirs:['./src/api']
+}),
+
+```
+
+
+
+## vue Viewport 布局
+Vant 默认使用 `px` 作为样式单位，如果需要使用 `viewport` 单位 (vw, vh, vmin, vmax)，推荐使用 [postcss-px-to-viewport](https://github.com/evrone/postcss-px-to-viewport) 进行转换。
+
+postcss-px-to-viewport 是一款 PostCSS 插件，用于将 px 单位转化为 vw/vh 单位。
+
+#### PostCSS PostCSS 示例配置
+
+下面提供了一份基本的 PostCSS 示例配置，可以在此配置的基础上根据项目需求进行修改。
+
+```JavaScript
+// postcss.config.js
+module.exports = {
+  plugins: {
+    'postcss-px-to-viewport': {
+      viewportWidth: 375,
+    },
+  },
+};
+
+```
+
+
+## Vue Rem 布局适配
+
+如果需要使用 `rem` 单位进行适配，推荐使用以下两个工具：
+
+- [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem) 是一款 PostCSS 插件，用于将 px 单位转化为 rem 单位
+- [lib-flexible](https://github.com/amfe/lib-flexible) 用于设置 rem 基准值
+
+#### PostCSS 示例配置
+
+下面提供了一份基本的 PostCSS 示例配置，可以在此配置的基础上根据项目需求进行修改。
+
+```JavaScript
+// postcss.config.js
+module.exports = {
+  plugins: {
+    'postcss-pxtorem': {
+      rootValue: 37.5,
+      propList: ['*'],
+    },
+  },
+};
+
+```
+
+
+
 ## vue打包项目
 > 这次给大家带来Vue在打包项目以后刷新显示404应该怎么处理，处理Vue在打包项目以后刷新显示404的注意事项有哪些。
 
