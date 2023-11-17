@@ -8,7 +8,6 @@
 [![](_media/weibo.png)](https://weibo.com/Linuxzhixin)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![](_media/qq.png)](http://wpa.qq.com/msgrd?v=3&uin=1648104226&site=qq&menu=yes)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![](_media/gmail.png)](Mailto:linuxzhixin@gmail.com)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![](_media/wx.png)](/?id=前言)
 
 
 [GitHub](https://github.com/aweixin/aweixin.github.io)

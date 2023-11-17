@@ -1,3 +1,4 @@
+* [Home](/)
 * [微信小程序](docs/xcx.md)
 * [常用插件](docs/cj.md)
 * [NPM](docs/nodejs.md)
@@ -14,4 +15,4 @@
 * [natapp.cn](http://natapp.cn/)
 * [Sunny-Ngrok](http://www.ngrok.cc/)
 * [keep-alive](docs/keep-alive.md)
-* [ReactHooks](docs/ReactHooks.md)
+* [ReactHooks](docs/ReactHooks.md) 
