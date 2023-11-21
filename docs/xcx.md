@@ -1,3 +1,69 @@
+## 微信小程序胶囊 
+>上面用到的 containerHeight 和 bottomHeight 这两个值是在 app 内配置的全局变量，也具体看看如何得到的吧，这里也把其他一些值写出来，后面博客可能会用到。
+
+```js
+globalData: {
+    //系统信息
+    systemInfo: {},
+    //1px像素值 对应 rpx
+    pixelRatio1: 2,
+    //胶囊信息
+    menuInfo: {},
+    //屏幕高度
+    screenHeight: 2000,
+    //顶部高度 = 状态栏高度 + 导航栏高度
+    topHeight: 0,
+    //状态栏高度
+    statusHeight: 0,
+    //导航栏高度
+    naviHeight: 0,
+    //底部安全高度
+    bottomHeight: 0,
+},
+      
+onLaunch: function () {
+    var that = this;
+
+    //获取设备信息
+    let systemInfo = wx.getSystemInfoSync()
+    that.globalData.systemInfo = systemInfo
+
+    //1rpx 像素值
+    let pixelRatio1 = 750 / systemInfo.windowWidth;
+    that.globalData.pixelRatio1 = pixelRatio1
+
+    //胶囊信息
+    let menu = wx.getMenuButtonBoundingClientRect()
+    that.globalData.menuInfo = menu
+
+    //状态栏高度
+    let statusHeight = systemInfo.statusBarHeight
+    that.globalData.statusHeight = statusHeight * pixelRatio1
+
+    //导航栏高度
+    let naviHeight = (menu.top - statusHeight) * 2 + menu.height
+    that.globalData.naviHeight = naviHeight * pixelRatio1
+
+    //顶部高度 = 状态栏高度 + 导航栏高度
+    that.globalData.topHeight = (statusHeight + naviHeight) * pixelRatio1
+
+    //屏幕高度
+    let screenHeight = systemInfo.screenHeight
+    that.globalData.screenHeight = screenHeight * pixelRatio1
+
+    //底部高度 = 屏幕高度 - 安全区域bottom
+    let bottom = systemInfo.safeArea.bottom
+    that.globalData.bottomHeight = (screenHeight - bottom) * pixelRatio1
+}
+
+```
+这里导航栏高度要说明一下，具体看下图，用胶囊顶部绝对高度减去状态栏高度得到一个小差值，这个差值的两倍加上胶囊的高度就是导航栏的高度了，应该不难，自定义导航栏的时候还是可以用到的。
+
+![微信小程序胶囊](../_media/WX20231121-171927.png)
+
+
+
+
 ## 微信小程序方法封装
 
 [点击下载mini_core.zip包](https://aweixin.github.io/lib/mini_core.zip)
