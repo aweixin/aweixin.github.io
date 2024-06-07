@@ -7,7 +7,6 @@ export default defineConfig({
     title: "仙门中走出的男人",
     description: "人如代码，规矩灵活；代码如诗，字句精伦。",
     srcDir: './src',
-    outDir: '../dist',
     lang: 'zh',
     themeConfig: {
 
