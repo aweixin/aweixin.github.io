@@ -3,13 +3,11 @@ import {getFiles} from "../utils/utils";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-
     title: "仙门中走出的男人",
     description: "人如代码，规矩灵活；代码如诗，字句精伦。",
     srcDir: './src',
     lang: 'zh',
     themeConfig: {
-
         outline: {
             label: '页面导航'
         },
@@ -32,12 +30,7 @@ export default defineConfig({
             }
         },
         search: {
-            provider: 'algolia',
-            options: {
-                appId: '36GSPPA91S',
-                apiKey: '1dbf5640e959db30f21cfcef1922ce13',
-                indexName: '仙门中走出的男人',
-            }
+            provider: 'local',
         },
         docFooter: {
             prev: '上一页',
