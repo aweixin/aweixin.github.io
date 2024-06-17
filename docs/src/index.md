@@ -15,8 +15,9 @@ hero:
 
   actions:
     - theme: brand
-      text: Enter the blog ？
+      text: 写代码咯
       link: /document
+
     - theme: alt
       text: GitHub
       link: https://github.com/aweixin/aweixin.github.io

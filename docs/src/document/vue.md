@@ -17,22 +17,24 @@ npm install -D vitest
 }
 ```
 
-vitest.config.ts
+`vitest.config.ts`
 
 ```javascript
-import type {UserConfig as VitestUserConfigInterface} from "vitest/config";
+import {fileURLToPath} from 'node:url'
+import {mergeConfig, defineConfig, configDefaults} from 'vitest/config'
+import viteConfig from './vite.config'
 
-const vitestConfig: VitestUserConfigInterface = {
-    test: {
-        globals: true,
-        environment: "jsdom"
-    }
-};
+export default mergeConfig(
+    viteConfig,
+    defineConfig({
+        test: {
+            environment: 'jsdom',
+            exclude: [...configDefaults.exclude, 'e2e/**'],
+            root: fileURLToPath(new URL('./', import.meta.url))
+        }
+    })
+)
 
-export default defineConfig({
-    ...vitestConfig,
-    // ...
-});
 ```
 
 方法测试
@@ -146,3 +148,37 @@ export const useStore = defineStore('main', () => {
     },
 )
 ```
+
+## 地址智能识别
+
+[smartParsePro](https://github.com/wzc570738205/smartParsePro)
+> 智能识别收货地址（支持省市区县街道/姓名/电话/邮编识别）
+> 安装使用
+
+```bash
+npm install address-smart-parse
+```
+
+```javascript
+import smart from 'address-smart-parse'
+
+smart("陕西省西安市雁塔区太白路西段1号 刘三娘 13590000018 211381000012096810")
+
+```
+
+返回格式：
+
+```js
+{
+    province: 陕西省
+    provinceCode: 61
+    city: 西安市
+    cityCode: 6101
+    county: 雁塔区
+    countyCode: 610113
+    address: 太白路西段1号
+    name: 刘三娘
+    phone: 11381000012
+}
+```
+
