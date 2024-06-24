@@ -21,9 +21,7 @@ export default defineConfig({
             },
             {text: '随心笔记', link: '/notes'},
         ],
-
         sidebar: {
-
             "/document": {
                 text: '技术分享',
                 items: getFiles('document')
@@ -46,15 +44,9 @@ export default defineConfig({
         footer: {
             copyright: 'Copyright © 2023-present 仙门中走出的男人'
         },
-        editLink: {
-            pattern: 'https://github.com/aweixin/aweixin.github.io/edit/main/src/:path',
-            text: '在 GitHub 上编辑此页'
-        },
-
         socialLinks: [
             {icon: 'github', link: 'https://github.com/aweixin/aweixin.github.io'}
         ],
-
     }
 })
 
