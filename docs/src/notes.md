@@ -29,3 +29,7 @@ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_pr
 
 export PUPPETEER_SKIP_DOWNLOAD='true'
 ```
+
+## 百度编辑器 ueditor 视频上传编辑`src`被清空
+
+> ueditor.config.js 配置文件 whitList 修改为：whiteList
