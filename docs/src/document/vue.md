@@ -1,5 +1,12 @@
 # Vue
 
+## vue3-select-component
+
+[vue3-select-component](https://www.npmjs.com/package/vue3-select2-component)
+> 一个基于 Vue3 的多选组件，支持单选、多选、远程搜索、分组、标签展示、自定义标签、自定义样式、自定义选项等。
+
+通过 `patch-package` 适配  [下载 patch-package包](/docs/public/patches.zip)
+
 ## 单元测试
 
 [Vitest](https://cn.vitest.dev/)

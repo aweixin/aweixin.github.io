@@ -19,7 +19,7 @@ DB_SOCKET=/Applications/MAMP/tmp/mysql/mysql.sock
 1、 这将忽略依赖冲突，但可能导致潜在的问题。你可以运行以下命令：
 
 ```bash
-npm install--legacy - peer - deps
+npm install --legacy-peer-deps
 ```
 
 2、复制代理终端命令，然后运行它。
