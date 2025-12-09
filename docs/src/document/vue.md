@@ -1,3 +1,201 @@
+## uniapp 自定义事件上报
+
+```ts
+export enum TrackingEventType {
+    /**
+     * 点击事件
+     */
+    CLICK = 'CLICK',
+    /**
+     * 查看事件 (进入时间)
+     */
+    VIEW = 'VIEW',
+    /**
+     * 曝光事件
+     * 曝光事件，用于 商品详情 （评论 / 商品详情内容） 区域在看到的时候触发
+     */
+    EXPOSURE = 'EXPOSURE',
+    /**
+     * 停留事件 （停留时间:毫秒）
+     */
+    STAY = 'STAY',
+    /**
+     * 启动事件 （启动时间）
+     */
+    LAUNCH = 'LAUNCH',
+    /**
+     * 退出事件 （退出时间）
+     */
+    EXIT = 'EXIT',
+    /**
+     * API调用事件 (接口地址， 请求状态，请求参数)
+     */
+    API = 'API',
+    /**
+     * 自定义事件
+     */
+    CUSTOM = 'CUSTOM',
+}
+
+export interface TrackingEvent {
+    /**
+     * 事件类型
+     */
+    type?: TrackingEventType
+    /**
+     * 事件编码
+     */
+    eventCode?: TrackingEventCode
+    /**
+     * 场景
+     */
+    scene?: string
+    /**
+     * 广告来源
+     */
+    utmSource?: string
+    /**
+     * 广告媒介
+     */
+    utmMedium?: string
+    /**
+     * 广告活动
+     */
+    utmCampaign?: string
+    /**
+     * 广告内容
+     */
+    utmContent?: string
+    /**
+     * 附加事件属性
+     */
+    properties?: any
+}
+
+export interface TrackingConfig {
+    /**
+     * 默认上报的接口
+     */
+    reportUrl: string
+    /**
+     * 批量上报的接口
+     */
+    reportUrlBatch?: string
+    /**
+     * 是否自动上报
+     */
+    autoTrack?: boolean
+    /**
+     * 批量上报的条数
+     */
+    batchSize?: number
+    /**
+     * 上报间隔(毫秒)
+     */
+    flushInterval?: number
+    /**
+     * 上报失败重试次数
+     */
+    maxRetry?: number
+    /**
+     * 是否开启调试模式
+     */
+    debug?: boolean
+    /**
+     * 请求头
+     * 默认为 { 'Content-Type': 'application/json' }
+     */
+    headers?: any
+
+    // 曝光配置
+    exposure?: ExposureConfig
+}
+
+/**
+ * 曝光配置项说明：
+ *
+ * area_rate: Number = 0
+ *   曝光的可见比例，有效值范围 0 ~ 1
+ *   默认值为 0，代表元素只要露出就满足可见比例条件
+ *   最大值为 1，代表元素需要完全露出才可满足可见比例条件
+ *
+ * stay_duration: Number = 0
+ *   有效停留时长，单位为秒
+ *   默认值为 0，代表元素只要满足了可见比例，有效停留时长就可满足
+ *
+ * repeated: Boolean = true
+ *   是否允许采集重复曝光
+ *   默认值为 true，即允许采集重复曝光
+ */
+export interface ExposureConfig {
+    area_rate?: number
+    stay_duration?: number
+    repeated?: boolean
+}
+
+// eventCode 枚举值
+export type TrackingEventCode
+    = 'CLICK_PRODUCT_ITEM'
+    | 'CLICK_PRODUCT_DETAIL'
+    | 'CLICK_PRODUCT_COMMENT'
+    | 'CLICK_PRODUCT_COMMENT_ITEM'
+    | 'CLICK_PRODUCT_COMMENT_REPLY'
+    | 'CLICK_PRODUCT_COMMENT_REPLY_ITEM'
+    | 'CLICK_PRODUCT_COMMENT_REPLY_LIKE'
+    | 'CLICK_PRODUCT_COMMENT_LIKE'
+
+```
+
+- 业务场景驱动：产品/运营需要点击、曝光、停留、API 调用等行为数据。
+- 现有方案痛点：侵入性强、类型不安全、H5/小程序不统一、重复曝光难控制、调试困难等。
+- 目标：**类型安全 + 自动采集 + 可配置 + 跨平台兼容（H5 + 小程序）+ 高性能**
+
+- 默认单条上报 vs 批量上报（`reportUrlBatch`）
+- `batchSize` + `flushInterval` 实现“积攒+定时”双触发机制
+- 失败重试（`maxRetry`）提升数据可靠性
+- 调试模式（`debug`）便于开发时排查
+
+#### 采集的公共字段
+
+```ts
+const _commonFields = {
+    userId: '',
+    scene: undefined,
+    // 用户唯一标识符
+    distinctId: '',
+    // 平台信息
+    platform,
+    // 操作系统
+    os: '',
+    // 设备型号
+    deviceModel: '',
+    // 应用版本
+    appVersion: '',
+    // 系统版本
+    osVersion: '',
+    // 屏幕宽度
+    screenWidth: undefined,
+    // 屏幕高度
+    screenHeight: undefined,
+    // 网络类型
+    networkType: '',
+    properties: {
+        source: '',
+    },
+}
+```
+
+#### 开发中遇到的难点
+
+> 小程序不支持 Vue directive 指令
+
+- 组件的形式 包裹监听 曝光事件
+- IntersectionObserver 在小程序中的行为特点
+- 只在「相交状态发生变化」时触发
+- 不是轮询或持续回调；
+- 只有当元素从「不可见到可见」或「可见到不可见」时，才会触发一次回调；
+- 如果元素一直在视口内（状态未变），不会重复触发。
+
 # Vue
 
 ## 微信下程序无法监听 [onShareAppMessage](https://developers.weixin.qq.com/community/develop/doc/0000447a5b431807af57249a551408?blockType=1&page=5)  事件的回调
@@ -53,7 +251,7 @@
 
 ![img.png](../../public/images/img_2.png)
 
-`**当我要删除一个元素时，会报如下错误：**`
+`当我要删除一个元素时`
 
 ![img_1.png](../../public/images/img_1.png)
 
