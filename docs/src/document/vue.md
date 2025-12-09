@@ -196,6 +196,17 @@ const _commonFields = {
 - 只有当元素从「不可见到可见」或「可见到不可见」时，才会触发一次回调；
 - 如果元素一直在视口内（状态未变），不会重复触发。
 
+```js
+
+observer.relativeToViewport().observe(`#${uniqueId}`, (res) => {
+    console.log('[Exposure] 小程序端监听到元素可见度变化:', res)
+    const visibleRate = res.intersectionRatio > 0 ? 1 : 0
+    // 注意：小程序无法获取精确比例，只能判断是否相交
+    // 所以 area_rate > 0 时，只有 visibleRate=1 才可能满足
+});
+
+```
+
 # Vue
 
 ## 微信下程序无法监听 [onShareAppMessage](https://developers.weixin.qq.com/community/develop/doc/0000447a5b431807af57249a551408?blockType=1&page=5)  事件的回调
