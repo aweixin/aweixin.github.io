@@ -1,5 +1,67 @@
 # Vue
 
+## 微信下程序无法监听 [onShareAppMessage](https://developers.weixin.qq.com/community/develop/doc/0000447a5b431807af57249a551408?blockType=1&page=5)  事件的回调
+
+> 指定监听到用户点击了分享， 但是是否分享出去无法监听到。
+>
+> 10月10日起新提交发布的版本，不再支持分享回调参数 success 、fail
+> 、complete，即用户从小程序/小游戏中分享消息给好友时，开发者将无法获知用户是否分享完成，也无法在分享后立即获得分享成功后的回调参数shareTicket。该调整可以在基础库
+> 2.3.0及以上版本体验。
+
+## vue `v-for` 将 index 作为下标的隐患
+
+> 虚拟DMO的 diff 算法
+
+```html
+
+<template>
+    <div>
+        <div v-for="(item,index) in list" :key="index">
+            <div>{{item.name}}</div>
+            <input type="input" placeholder="请输入"/>
+            <button @click="handleAdd()">添加</button>
+            <button @click="handleDelete(index)">删除</button>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                list: [],
+            };
+        },
+        created() {
+            this.handleAdd();
+        },
+        methods: {
+            handleAdd() {
+                let random = Math.random() * 1000;
+                this.list.push({
+                    id: random,
+                    name: random
+                })
+            },
+            handleDelete(i) {
+                this.list.splice(i, 1)
+            },
+        }
+    };
+</script>
+```
+
+![img.png](../../public/images/img_2.png)
+
+`**当我要删除一个元素时，会报如下错误：**`
+
+![img_1.png](../../public/images/img_1.png)
+
+**解决方法：**
+> 原因是虚拟DOM在比较元素的时候，因为DOM上的key等属性均未发生变化，所以其自身和内部的input均被复用了。
+>
+>所以我们应该养成好习惯，不在实际开发过程中把index作为key值。
+
 ## openapi-ts-request
 
 [openapi-ts-request](https://www.npmjs.com/package/openapi-ts-request)
@@ -17,7 +79,7 @@ npm i openapi-ts-request --save-dev
 // 在项目根目录下创建 openapi.ts 文件  文件名自定义
 
 // 在 openapi.ts 文件中引入 openapi-ts-request
-const { generateService } = require('openapi-ts-request')
+const {generateService} = require('openapi-ts-request')
 
 generateService({
     // 接口文档地址
@@ -29,11 +91,11 @@ generateService({
     // request 导入路径
     requestImportStatement: 'import { request } from "../services/Apiservice"',
     // 是否将路径转换为驼峰命名 true: /app/user/list 转换为 appUserList  false: /app/user/list 转换为 app_user_list
-    isCamelCase:!true,
+    isCamelCase: !true,
     // 钩子函数
-    hook:{
-      // 自定义函数名
-        customFunctionName(item){
+    hook: {
+        // 自定义函数名
+        customFunctionName(item) {
             const path = item.path.slice(1)
             const functionName = path.split('/').join('_');
             return functionName;
@@ -42,6 +104,7 @@ generateService({
 })
 
 ```
+
 在 package.json 的 script 中添加命令: "openapi": "node xxx/xxx/openapi-ts-request.config.js"
 
 ```bash
@@ -56,7 +119,6 @@ src/apis/types.ts #类型定义文件
 src/apis/pet.ts #接口文件
 ```
 
-
 ## 基于 openapi-ts-request 的 request 请求封装
 
 ### 代码实例
@@ -64,24 +126,45 @@ src/apis/pet.ts #接口文件
 ```javascript
 // apiRequest.ts
 
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios"
+import axios, {AxiosRequestConfig, AxiosResponse, AxiosError} from "axios"
 
 
 // 创建自定义错误类
 export class ApiError extends Error {
-    constructor(public status: number, message: string) {
-        super(message);
-        this.name = 'ApiError';
-        // 添加堆栈跟踪
-        Error.captureStackTrace(this, ApiError);
-        // 在控制台输出错误信息
-        console.error(message);
-    }
+    constructor(public
+
+    status: number
+,
+    message: string
+) {
+    super(message);
+
+    this
+.
+    name = 'ApiError';
+    // 添加堆栈跟踪
+    Error
+.
+
+    captureStackTrace(
+
+    this
+,
+    ApiError
+)
+    ;
+    // 在控制台输出错误信息
+    console
+.
+
+    error(message);
+}
 }
 
 // 定义 HTTP 方法类型
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 
-                 'get' | 'post' | 'put' | 'delete' | 'patch';
+type
+HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' |
+    'get' | 'post' | 'put' | 'delete' | 'patch';
 
 const Message = {
     success(message: string) {
@@ -93,201 +176,220 @@ const Message = {
 }
 
 class Apiservice {
-      private static instance: Apiservice
-      private axiosInstance: any
-      private baseURL: string
+    private static instance: Apiservice
+    private axiosInstance: any
+    private baseURL: string
 
-      private constructor() {
-            // 默认的 baseURL（可以根据需要设置默认域名）
-            this.baseURL = import.meta.env.VITE_APP_API_URL || "http://localhost:3000"
+    private constructor() {
+        // 默认的 baseURL（可以根据需要设置默认域名）
+        this.baseURL = import.meta.env.VITE_APP_API_URL || "http://localhost:3000"
 
-            // 创建一个 API 请求服务实例，设置通用配置
-            this.axiosInstance = axios.create({
-                  baseURL: this.baseURL, // 初始化为默认域名
-                  timeout: 10000, // 请求超时时间
-                  headers: {
-                        'Content-Type': 'application/json'
-                  }
+        // 创建一个 API 请求服务实例，设置通用配置
+        this.axiosInstance = axios.create({
+            baseURL: this.baseURL, // 初始化为默认域名
+            timeout: 10000, // 请求超时时间
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        // 请求拦截器：在请求发出之前做一些处理
+        this.axiosInstance.interceptors.request.use(
+            (config: AxiosRequestConfig) => {
+                const token = localStorage.getItem("token")
+                if (token) {
+                    config.headers = {
+                        ...config.headers,
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                return config
+            },
+            (error) => {
+                return Promise.reject(error)
+            }
+        )
+
+        // 响应拦截器：对响应数据做处理（比如处理错误信息）
+        this.axiosInstance.interceptors.response.use(
+            (response: AxiosResponse) => {
+                return response.data
+            },
+            (error: AxiosError) => {
+                // @ts-ignore
+                const errorMessage = error.response?.data?.message || error.message
+
+                Message.error(errorMessage) // 错误提示
+                return Promise.reject(errorMessage)
+            }
+        )
+    }
+
+    // 单例模式，确保只有一个 Apiservice 实例
+    public static getInstance(): Apiservice {
+        if (!Apiservice.instance) {
+            Apiservice.instance = new Apiservice()
+        }
+        return Apiservice.instance
+    }
+
+    // 设置 baseURL（支持多个域名）
+    public setBaseURL(baseURL: string): void {
+        this.baseURL = baseURL
+        this.axiosInstance.defaults.baseURL = baseURL
+    }
+
+    // 通用请求方法
+    public async request<T>(
+        method: HttpMethod,
+        url: string,
+        data
+
+?:
+    any
+,
+    showMessage: { success?: boolean; error?: boolean } = {success: false, error: false}
+,
+    config: AxiosRequestConfig = {}
+):
+
+    Promise<T> {
+        try {
+            const response = await this.axiosInstance({
+                method: method.toUpperCase(),
+                url,
+                data,
+                ...config,
             })
 
-            // 请求拦截器：在请求发出之前做一些处理
-            this.axiosInstance.interceptors.request.use(
-                  (config: AxiosRequestConfig) => {
-                        const token = localStorage.getItem("token")
-                        if (token) {
-                            config.headers = {
-                                ...config.headers,
-                                Authorization: `Bearer ${token}`
-                            }
-                        }
-                        return config
-                  },
-                  (error) => {
-                        return Promise.reject(error)
-                  }
-            )
-
-            // 响应拦截器：对响应数据做处理（比如处理错误信息）
-            this.axiosInstance.interceptors.response.use(
-                  (response: AxiosResponse) => {
-                        return response.data
-                  },
-                  (error: AxiosError) => {
-                        // @ts-ignore
-                        const errorMessage = error.response?.data?.message || error.message
-
-                        Message.error(errorMessage) // 错误提示
-                        return Promise.reject(errorMessage)
-                  }
-            )
-      }
-
-      // 单例模式，确保只有一个 Apiservice 实例
-      public static getInstance(): Apiservice {
-            if (!Apiservice.instance) {
-                  Apiservice.instance = new Apiservice()
+            // 成功提示
+            if (showMessage.success && response?.message) {
+                Message.success(response.message)
             }
-            return Apiservice.instance
-      }
 
-      // 设置 baseURL（支持多个域名）
-      public setBaseURL(baseURL: string): void {
-            this.baseURL = baseURL
-            this.axiosInstance.defaults.baseURL = baseURL
-      }
-
-      // 通用请求方法
-      public async request<T>(
-            method: HttpMethod,
-            url: string,
-            data?: any,
-            showMessage: { success?: boolean; error?: boolean } = { success: false, error: false },
-            config: AxiosRequestConfig = {}
-      ): Promise<T> {
-            try {
-                  const response = await this.axiosInstance({
-                        method: method.toUpperCase(),
-                        url,
-                        data,
-                        ...config,
-                  })
-
-                  // 成功提示
-                  if (showMessage.success && response?.message) {
-                        Message.success(response.message)
-                  }
-
-                  return response
-            } catch (error) {
-                  // 错误提示
-                if (error.response) {
-                    const {status, data} = error.response;
-                    const errorMessage = data.message || '请求失败';
-                    ResponseHandler.handleBusinessError(status, errorMessage);
-                    throw new ApiError(status, errorMessage);
-                }
-                ResponseHandler.handleNetworkError();
-                throw new ApiError(500, '网络错误');
+            return response
+        } catch (error) {
+            // 错误提示
+            if (error.response) {
+                const {status, data} = error.response;
+                const errorMessage = data.message || '请求失败';
+                ResponseHandler.handleBusinessError(status, errorMessage);
+                throw new ApiError(status, errorMessage);
             }
-      }
+            ResponseHandler.handleNetworkError();
+            throw new ApiError(500, '网络错误');
+        }
+    }
 
-      // 封装 get 请求
-      public get<T>(
-            url: string,
-            showMessage: { success?: boolean; error?: boolean } = { success: false, error: false },
-            config: AxiosRequestConfig = {}
-      ): Promise<T> {
-            return this.request<T>("get", url, undefined, showMessage, config)
-      }
+    // 封装 get 请求
+    public get<T>(
+        url: string,
+        showMessage: { success?: boolean; error?: boolean } = {success: false, error: false},
+        config: AxiosRequestConfig = {}
+    ): Promise<T> {
+        return this.request < T > ("get", url, undefined, showMessage, config)
+    }
 
-      // 封装 post 请求
-      public post<T>(
-            url: string,
-            data: any,
-            showMessage: { success?: boolean; error?: boolean } = { success: false, error: false },
-            config: AxiosRequestConfig = {}
-      ): Promise<T> {
-            return this.request<T>("post", url, data, showMessage, config)
-      }
+    // 封装 post 请求
+    public post<T>(
+        url: string,
+        data: any,
+        showMessage: { success?: boolean; error?: boolean } = {success: false, error: false},
+        config: AxiosRequestConfig = {}
+    ): Promise<T> {
+        return this.request < T > ("post", url, data, showMessage, config)
+    }
 
-      // 封装 put 请求
-      public put<T>(
-            url: string,
-            data: any,
-            showMessage: { success?: boolean; error?: boolean } = { success: false, error: false },
-            config: AxiosRequestConfig = {}
-      ): Promise<T> {
-            return this.request<T>("put", url, data, showMessage, config)
-      }
+    // 封装 put 请求
+    public put<T>(
+        url: string,
+        data: any,
+        showMessage: { success?: boolean; error?: boolean } = {success: false, error: false},
+        config: AxiosRequestConfig = {}
+    ): Promise<T> {
+        return this.request < T > ("put", url, data, showMessage, config)
+    }
 
-      // 封装 delete 请求
-      public delete<T>(
-            url: string,
-            showMessage: { success?: boolean; error?: boolean } = { success: false, error: false },
-            config: AxiosRequestConfig = {}
-      ): Promise<T> {
-            return this.request<T>("delete", url, undefined, showMessage, config)
-      }
+    // 封装 delete 请求
+    public delete<T>(
+        url: string,
+        showMessage: { success?: boolean; error?: boolean } = {success: false, error: false},
+        config: AxiosRequestConfig = {}
+    ): Promise<T> {
+        return this.request < T > ("delete", url, undefined, showMessage, config)
+    }
 
-      // 封装 patch 请求
-      public patch<T>(
-            url: string,
-            data: any,
-            showMessage: { success?: boolean; error?: boolean } = { success: false, error: false },
-            config: AxiosRequestConfig = {}
-      ): Promise<T> {
-            return this.request<T>("patch", url, data, showMessage, config)
-      }
+    // 封装 patch 请求
+    public patch<T>(
+        url: string,
+        data: any,
+        showMessage: { success?: boolean; error?: boolean } = {success: false, error: false},
+        config: AxiosRequestConfig = {}
+    ): Promise<T> {
+        return this.request < T > ("patch", url, data, showMessage, config)
+    }
 }
 
 
 // 导出一个便捷的 request 函数
-export const request = <T>(
+export const request =
+<
+T > (
     url: string,
-    config: {
-        method: HttpMethod;
-        data?: any;
-        headers?: Record<string, string>;
-        showMessage?: { success?: boolean; error?: boolean };
-        [key: string]: any;
-    }
-): Promise<T> => {
-    const { method, data, headers, showMessage = { success: false, error: true }, ...rest } = config;
-    
-    return Apiservice.getInstance().request<T>(
+    config
+:
+{
+    method: HttpMethod;
+    data ? : any;
+    headers ? : Record < string, string >;
+    showMessage ? : {success? : boolean; error? : boolean};
+    [key
+:
+    string
+]:
+    any;
+}
+):
+Promise < T >
+=>
+{
+    const {method, data, headers, showMessage = {success: false, error: true}, ...rest} = config;
+
+    return Apiservice.getInstance().request < T > (
         method,
-        url,
-        data,
-        showMessage,
-        { headers, ...rest }
+            url,
+            data,
+            showMessage,
+            {headers, ...rest}
     );
-};
+}
+;
 
 
 export default Apiservice
 
 /**
 
-// 切换到域名 1
-import Apiservice from "@/services/apiRequest";
+ // 切换到域名 1
+ import Apiservice from "@/services/apiRequest";
 
-Apiservice.getInstance().setBaseURL("https://api.domain1.com");
+ Apiservice.getInstance().setBaseURL("https://api.domain1.com");
 
-export const getUserInfo = (userId: string) => {
-  return Apiservice.getInstance().get(`/user/${userId}`, { success: false, error: true });
-};
-
-
+ export const getUserInfo = (userId: string) => {
+ return Apiservice.getInstance().get(`/user/${userId}`, { success: false, error: true });
+ };
 
 
-// 切换到域名 2
-import Apiservice from "@/services/apiRequest";
 
-Apiservice.getInstance().setBaseURL("https://api.domain2.com");
 
-export const getProductList = () => {
-  return Apiservice.getInstance().get("/products", { success: false, error: true });
-};
+ // 切换到域名 2
+ import Apiservice from "@/services/apiRequest";
+
+ Apiservice.getInstance().setBaseURL("https://api.domain2.com");
+
+ export const getProductList = () => {
+ return Apiservice.getInstance().get("/products", { success: false, error: true });
+ };
  */
 
 
