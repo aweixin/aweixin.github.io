@@ -7,6 +7,7 @@ export default defineConfig({
     description: "人如代码，规矩灵活；代码如诗，字句精伦。",
     srcDir: './src',
     lang: 'zh',
+    cleanUrls: false,
     themeConfig: {
         outline: {
             label: '页面导航'
