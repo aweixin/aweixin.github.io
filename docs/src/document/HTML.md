@@ -3,7 +3,7 @@
 [postcss-px-to-viewport-8-plugin](https://www.npmjs.com/package/postcss-px-to-viewport-8-plugin)
 
 
-> 将 px 单位转换为视口单位的 (vw, vh, vmin, vmax) 的 PostCSS 插件.
+> 将 px 单位转换为视口单位的 (vw, vh, vmin, vmax) 的 PostCSS 插件
 
 ## px-to-viewport
 
