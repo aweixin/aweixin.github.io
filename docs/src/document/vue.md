@@ -1,3 +1,61 @@
+# vue
+
+## 将源对象按映射规则转换为目标对象
+
+```ts
+/**
+ * 将源对象按映射规则转换为目标对象
+ *
+ * @param source - 原始数据对象（如 API 返回）
+ * @param mapping - 映射规则：
+ *   - 字符串：表示从 source 中取该 key 的值（用于重命名）
+ *   - 函数：接收 source，返回新值（用于逻辑转换）
+ *
+ * @example
+ * const raw = { user_id: 1, name: 'Alice', status: 1 };
+ * const user = mapFields(raw, {
+ *   id: 'user_id',
+ *   displayName: 'name',
+ *   isActive: src => src.status === 1
+ * });
+ * // 结果: { id: 1, displayName: 'Alice', isActive: true }
+ */
+export function mapFields<
+    Source extends Record<string, any>,
+    Mapping extends Record<
+        string,
+        keyof Source | ((src: Source) => any)
+    >,
+>(
+    source: Source,
+    mapping: Mapping,
+): {
+        [K in keyof Mapping]: Mapping[K] extends keyof Source
+            ? Source[Mapping[K]]
+            : Mapping[K] extends (src: Source) => infer R
+                ? R
+                : never;
+    } {
+    const result = {} as any
+
+    for (const targetKey in mapping) {
+        if (Object.prototype.hasOwnProperty.call(mapping, targetKey)) {
+            const rule = mapping[targetKey]
+
+            if (typeof rule === 'function') {
+                result[targetKey] = rule(source)
+            } else {
+                // rule 是 keyof Source
+                result[targetKey] = source[rule]
+            }
+        }
+    }
+
+    return result
+}
+
+```
+
 ## uniapp 自定义事件上报
 
 ```ts
