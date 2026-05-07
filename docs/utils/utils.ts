@@ -1,6 +1,6 @@
 import fs from "fs"
 
-// 获取指定目录下的文件
+// 获取指定目录下的文件 test
 export function getFiles(dir: string) {
     const files = fs.readdirSync('./docs/src/' + dir)
     let sortFiles = []
